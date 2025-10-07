@@ -1,5 +1,29 @@
 [ 
   {
+    "version": "v1.11.5",
+    "date": "07/10/2025 - 15:10",
+    "changes": [
+      {
+        "text": "Déplacement des fichiers .json dans un dossier json pour une meilleure organisation.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Mise à jour de tous les chemins d'accès aux fichiers .json dans le code (fetch).",
+        "type": "secondaire"
+      }
+    ]
+  },
+  {
+    "version": "v1.11.4",
+    "date": "07/10/2025 - 14:50",
+    "changes": [
+      {
+        "text": "Correction de touts les changelogs pour les faire passer vers la nouvelle version de la gestion des changelogs.",
+        "type": "global"
+      }
+    ]
+  },
+  {
     "version": "v1.11.3",
     "date": "07/10/2025 - 14:30",
     "changes": [
@@ -333,26 +357,72 @@
     "version": "v1.8.2",
     "date": "05/01/2025 - 23:05",
     "changes": [
-      "Harmonisation complète du style de la page Professeur avec les autres pages du site.",
-      "Mise en place de la disposition horizontale des cartes sur toutes les pages de formulaires.",
-      "Réorganisation de la sous-navigation : boutons d'action à gauche, onglets à droite.",
-      "Amélioration de l'affichage des professeurs multiples avec séparateur '/' entre les noms.",
-      "Optimisation du bouton de copie avec feedback visuel amélioré."
+      {
+        "text": "Gestion multi-rapports avec onglets dynamiques pour chaque type séparément.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Harmonisation complète du style de la page Professeur avec les autres pages du site.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Mise en place de la disposition horizontale des cartes sur toutes les pages de formulaires.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Réorganisation de la sous-navigation : boutons d'action à gauche, onglets à droite.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Amélioration de l'affichage des professeurs multiples avec séparateur '/' entre les noms.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Optimisation du bouton de copie avec feedback visuel amélioré.",
+        "type": "secondaire"
+      }
     ]
   },
   {
     "version": "v1.8.1",
     "date": "05/01/2025 - 22:50",
     "changes": [
-      "Ajout de la page Professeur avec deux types de rapports : Rapport de Note (évaluation EMT) et Demande de Points (formation).",
-      "Système de gestion des grades dans les paramètres avec échelons conditionnels (Paramédic, Médecin, etc.).",
-      "Système de spécialités avec affichage conditionnel des onglets (PH visible uniquement si spécialité Pilote Héliporté, Professeur si spécialité Professeur).",
-      "Ajout dynamique de professeurs et participants dans la page Professeur.",
-      "Remplissage automatique des champs professeur avec les données des paramètres.",
-      "Amélioration du style : disposition horizontale des cartes sur toutes les pages.",
-      "Limitation des valeurs d'entrée pour les notes (ne peut pas dépasser le maximum de chaque catégorie).",
-      "Amélioration du style des boutons de sous-navigation.",
-      "Rapport généré affiché en haut de page pour une meilleure expérience utilisateur."
+      {
+        "text": "Ajout de la page Professeur avec deux types de rapports : Rapport de Note (évaluation EMT) et Demande de Points (formation).",
+        "type": "secondaire"
+      },
+      {
+        "text": "Système de gestion des grades dans les paramètres avec échelons conditionnels (Paramédic, Médecin, etc.).",
+        "type": "secondaire"
+      },
+      {
+        "text": "Système de spécialités avec affichage conditionnel des onglets (PH visible uniquement si spécialité Pilote Héliporté, Professeur si spécialité Professeur).",
+        "type": "secondaire"
+      },
+      {
+        "text": "Ajout dynamique de professeurs et participants dans la page Professeur.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Remplissage automatique des champs professeur avec les données des paramètres.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Amélioration du style : disposition horizontale des cartes sur toutes les pages.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Limitation des valeurs d'entrée pour les notes (ne peut pas dépasser le maximum de chaque catégorie).",
+        "type": "secondaire"
+      },
+      {
+        "text": "Amélioration du style des boutons de sous-navigation.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Rapport généré affiché en haut de page pour une meilleure expérience utilisateur.",
+        "type": "secondaire"
+      }
     ]
   },
   {
@@ -389,83 +459,174 @@
     "version": "v1.7",
     "date": "01/08/2025 - 06:00",
     "changes": [
-      "Ajout de la fonction de recherche de patient dans le Trello correspondant a la première lettre de son prénom dans le rapport de soins.",
-      "Ajout d'un bouton 'Réinitialiser le rapport/fiche' dans toutes les pages concernées (rapport, morgue, impayés, refus de soin, LSPD, PH). Le bouton permet de réinitialiser le rapport ou la fiche courante aux valeurs par défaut et a été déplacé dans la barre supérieure de chaque page."
+      {
+        "text": "Ajout de la fonction de recherche de patient dans le Trello correspondant a la première lettre de son prénom dans le rapport de soins.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Ajout d'un bouton 'Réinitialiser le rapport/fiche' dans toutes les pages concernées (rapport, morgue, impayés, refus de soin, LSPD, PH). Le bouton permet de réinitialiser le rapport ou la fiche courante aux valeurs par défaut et a été déplacé dans la barre supérieure de chaque page.",
+        "type": "secondaire"
+      }
     ]
   },
   {
     "version": "v1.6.5",
     "date": "01/08/2025 - 01:50",
     "changes": [
-      "Réglage du bug quand on copie un rapport (soin/refus/mogue) et qu'on le colle il n'y avais pas le gras.",
-      "Ajout de la possibilité d'exporter et d'importer les statistiques.",
-      "Retrait de PDS et FDS dans Service, car c'est inutile."
+      {
+        "text": "Réglage du bug quand on copie un rapport (soin/refus/morgue) et qu'on le colle il n'y avais pas le gras.",
+        "type": "global"
+      },
+      {
+        "text": "Ajout de la possibilité d'exporter et d'importer les statistiques.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Retrait de PDS et FDS dans Service, car c'est inutile.",
+        "type": "secondaire"
+      }
     ]
   },
   {
     "version": "v1.6",
     "date": "31/07/2025 - 18:30",
     "changes": [
-      "Diverses améliorations de performance et de sécurité.",
-      "Ajout d'une notification sur toutes les pages pour donner le moyen de signaler un bug ou une erreur."
+      {
+        "text": "Diverses améliorations de performance et de sécurité.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Ajout d'une notification sur toutes les pages pour donner le moyen de signaler un bug ou une erreur.",
+        "type": "secondaire"
+      }
     ]
   },
   {
     "version": "v1.5",
     "date": "31/07/2025 - 17:30",
     "changes": [
-      "Nettoyage et réorganisation du code CSS : suppression des doublons, séparation des styles globaux et spécifiques (statistiques).",
-      "Refonte du style de la page <b>statistiques.html</b> : styles déplacés dans le head de la page, structure HTML clarifiée.",
-      "Refonte du style de la page <b>manuels.html</b> : affichage par catégories, filtres dynamiques, design responsive et moderne.",
-      "Chargement dynamique des manuels depuis <b>manuels.json</b> (plus de données en dur dans le JS).",
-      "Correction du chargement dynamique de la version depuis <b>changelog.json</b> sur toutes les pages.",
-      "Uniformisation des styles et de la structure des headers, boutons et containers sur toutes les pages.",
-      "Suppression des styles statistiques du fichier <b>style.css</b> pour alléger le CSS global."
+      {
+        "text": "Nettoyage et réorganisation du code CSS : suppression des doublons, séparation des styles globaux et spécifiques (statistiques).",
+        "type": "secondaire"
+      },
+      {
+        "text": "Refonte du style de la page <b>statistiques.html</b> : styles déplacés dans le head de la page, structure HTML clarifiée.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Refonte du style de la page <b>manuels.html</b> : affichage par catégories, filtres dynamiques, design responsive et moderne.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Chargement dynamique des manuels depuis <b>manuels.json</b> (plus de données en dur dans le JS).",
+        "type": "secondaire"
+      },
+      {
+        "text": "Correction du chargement dynamique de la version depuis <b>changelog.json</b> sur toutes les pages.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Uniformisation des styles et de la structure des headers, boutons et containers sur toutes les pages.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Suppression des styles statistiques du fichier <b>style.css</b> pour alléger le CSS global.",
+        "type": "secondaire"
+      }
     ]
   },
   {
     "version": "v1.4",
     "date": "31/07/2025 - 17:00",
     "changes": [
-      "Refonte de l’en-tête : version et bouton informations affichés à droite du titre, header plus compact.",
-      "Ajout du sticky sur le header, la barre de navigation et la sous-barre (ex : Service 1, Ajouter un service) sur toutes les pages principales.",
-      "Uniformisation du style sticky sur <b>service.html</b>, <b>impayes.html</b> et autres pages."
+      {
+        "text": "Ajout d'un en-tête sur toutes les pages avec le titre de la page et un bouton de retour.",
+        "type": "global"
+      },
+      {
+        "text": "Refonte de l’en-tête : version et bouton informations affichés à droite du titre, header plus compact.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Ajout du sticky sur le header, la barre de navigation et la sous-barre (ex : Service 1, Ajouter un service) sur toutes les pages principales.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Uniformisation du style sticky sur <b>service.html</b>, <b>impayes.html</b> et autres pages.",
+        "type": "secondaire"
+      }
     ]
   },
   {
     "version": "v1.3",
     "date": "31/07/2025 - 16:00",
     "changes": [
-      "Ajout de la page <b>informations</b> avec versionning et changelog.",
-      "Amélioration de l'affichage des manuels : regroupement par catégorie, filtres, couleurs personnalisées, auteur affiché.",
-      "Statistiques : affichage graphique, tri des actions, affichage des heures en h/mn, semaines lisibles.",
-      "Correction de l'auto-remplissage du nom/ID dans PH."
+      {
+        "text": "Ajout de la page informations avec versionning et changelog.",
+        "type": "global"
+      },
+      {
+        "text": "Amélioration de l'affichage des manuels : regroupement par catégorie, filtres, couleurs personnalisées, auteur affiché.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Statistiques : affichage graphique, tri des actions, affichage des heures en h/mn, semaines lisibles.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Correction de l'auto-remplissage du nom/ID dans PH.",
+        "type": "secondaire"
+      }
     ]
   },
   {
     "version": "v1.2",
     "date": "31/07/2025 - 04:30",
     "changes": [
-      "Ajout du bouton de réinitialisation des statistiques.",
-      "Ajout du support des auteurs sur les manuels.",
-      "Amélioration de la navigation et du responsive sur toutes les pages."
+      {
+        "text": "Ajout du bouton de réinitialisation des statistiques.",
+        "type": "global"
+      },
+      {
+        "text": "Ajout du support des auteurs sur les manuels.",
+        "type": "global"
+      },
+      {
+        "text": "Amélioration de la navigation et du responsive sur toutes les pages.",
+        "type": "global"
+      }
     ]
   },
   {
     "version": "v1.1",
     "date": "30/07/2025 - 03:30",
     "changes": [
-      "Ajout de la page <b>manuels</b> : affichage en cartes.",
-      "Ajout de la page <b>statistiques</b> avec graphiques et tri avancé.",
-      "Refonte du design général."
+      {
+        "text": "Ajout de la page <b>manuels</b> : affichage en cartes.",
+        "type": "global"
+      },
+      {
+        "text": "Ajout de la page <b>statistiques</b> avec graphiques et tri avancé.",
+        "type": "global"
+      },
+      {
+        "text": "Refonte du design général.",
+        "type": "global"
+      }
     ]
   },
   {
     "version": "v1.0",
     "date": "30/07/2025 - 02:30",
     "changes": [
-      "Première version du site Aide SAMS.",
-      "Pages : Service, Rapport de soins, Refus de soins, Morgue, Impayés, LSPD, PH, Paramètres."
+      {
+        "text": "Première version du site Aide SAMS.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Pages : Service, Rapport de soins, Refus de soins, Morgue, Impayés, LSPD, PH, Paramètres.",
+        "type": "global"
+      }
     ]
   }
 ]

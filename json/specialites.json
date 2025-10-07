@@ -1,0 +1,34 @@
+[
+    {
+        "specialite": "Pilote Héliporté",
+        "membres" : [
+            "Hayk Lutter",
+            "Maxime Hebert"
+        ]
+    },
+    {
+        "specialite": "Professeur",
+        "membres" : [
+            "John Gordon"
+        ]
+    },
+    {
+        "specialite": "Médecin Légiste",
+        "membres" : [
+            "Vera Tyr",
+            "Valandor Theronis"
+        ]
+    },
+    {
+        "specialite": "Psychologue",
+        "membres" : [
+            "Silvia Dupont"
+        ]
+    },
+    {
+        "specialite": "Assistant Direction",
+        "membres" : [
+            "Arthur Lenz"
+        ]
+    }
+]

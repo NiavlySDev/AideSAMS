@@ -2,7 +2,7 @@
 class UpdateNotifier {
     constructor() {
         this.storageKey = 'aidesams_last_seen_version';
-        this.changelogUrl = 'changelog.json';
+        this.changelogUrl = 'json/changelog.json';
         this.currentVersion = null;
         this.lastSeenVersion = localStorage.getItem(this.storageKey);
     }

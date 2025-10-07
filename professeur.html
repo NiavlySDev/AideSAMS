@@ -903,7 +903,7 @@ ${participantsText}
             calculateNotes();
         });
 
-        fetch('changelog.json')
+        fetch('json/changelog.json')
             .then(res => res.json())
             .then(data => {
                 if (Array.isArray(data) && data.length > 0) {
@@ -969,7 +969,7 @@ ${participantsText}
     
     <script>
         // Chargement de la version depuis changelog.json
-        fetch('changelog.json')
+        fetch('json/changelog.json')
             .then(res => res.json())
             .then(data => {
                 if (Array.isArray(data) && data.length > 0) {

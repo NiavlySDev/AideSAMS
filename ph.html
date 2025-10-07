@@ -323,7 +323,7 @@ Date et Heure du Vol : ${dateStr && timeStr ? `Le ${dateStr} à ${timeStr}` : ""
         // Appel au chargement de la page
         document.addEventListener('DOMContentLoaded', updateSpecialityTabs);
         
-        fetch('changelog.json')
+        fetch('json/changelog.json')
             .then(res => res.json())
             .then(data => {
                 if (Array.isArray(data) && data.length > 0) {
