@@ -1,6 +1,25 @@
 [ 
   {
-    "version": "v1.8.1",
+    "version": "v1.9.0",
+    "date": "07/10/2025 - 20:30",
+    "changes": [
+      "Refonte complète de la page Professeur avec système de sous-navigation à onglets.",
+      "Ajout du type de rapport 'Demande de Points' avec interface dédiée et template spécialisé.",
+      "Système de gestion séparée des deux types de rapports (Rapport de Note et Demande de Points).",
+      "Interface dynamique pour l'ajout/suppression de professeurs et participants multiples.",
+      "Formatage automatique des dates (DD/MM/YYYY) et heures (HH:MM) dans les demandes de points.",
+      "Sauvegarde indépendante des données pour chaque type de rapport dans localStorage.",
+      "Affichage automatique du template de rapport dès le chargement de la page (plus de zone vide).",
+      "Correction du système de notification pliable pour la barre d'information de bugs.",
+      "Ajout de l'affichage automatique de la version dans le header depuis changelog.json.",
+      "Amélioration de l'expérience utilisateur avec des templates pré-remplis et des placeholders informatifs.",
+      "Validation et limitation automatique des valeurs d'entrée pour les notes EMT.",
+      "Interface cohérente et responsive pour tous les types de rapports professeur.",
+      "Gestion multi-rapports avec onglets dynamiques pour chaque type séparément."
+    ]
+  },
+  {
+    "version": "v1.8.2",
     "date": "05/01/2025 - 23:05",
     "changes": [
       "Harmonisation complète du style de la page Professeur avec les autres pages du site.",
@@ -11,7 +30,7 @@
     ]
   },
   {
-    "version": "v1.8.0",
+    "version": "v1.8.1",
     "date": "05/01/2025 - 22:50",
     "changes": [
       "Ajout de la page Professeur avec deux types de rapports : Rapport de Note (évaluation EMT) et Demande de Points (formation).",
@@ -27,7 +46,7 @@
   },
   {
     "version": "v1.8.0",
-    "date": "05/10/2025 - 19:00",
+    "date": "05/10/2025 - 22:20",
     "changes": [
       "Ajout complet de la page Professeur avec deux types de rapports : Rapport de Note et Demande de Points.",
       "Implémentation du système de grades et spécialités dans les paramètres utilisateur.",
