@@ -1,5 +1,62 @@
 [ 
   {
+    "version": "v1.10.3",
+    "date": "07/10/2025 - 10:15",
+    "changes": [
+      "🔇 Amélioration UX : Suppression complète de toutes les alertes et confirmations dans la page Suggestions/Bugs.",
+      "Suppression des alertes de validation : les erreurs de champs vides n'interrompent plus l'utilisateur.",
+      "Suppression des alertes de succès : confirmation d'envoi Discord via feedback visuel uniquement.",
+      "Suppression des alertes d'erreur : erreurs loggées silencieusement dans la console pour le débogage.",
+      "Suppression du dialogue de confirmation lors du vidage des formulaires : action immédiate.",
+      "Suppression de l'alerte 'Copié !' dans la modale de messages : copie silencieuse.",
+      "Expérience utilisateur fluidifiée : plus d'interruptions par des pop-ups, workflow continu.",
+      "Conservation du logging d'erreurs pour le support technique via console.error()."
+    ]
+  },
+  {
+    "version": "v1.10.2",
+    "date": "07/10/2025 - 10:00",
+    "changes": [
+      "Refonte complète des formulaires de soumission pour intégrer les informations RP.",
+      "Remplacement des champs 'Nom d'utilisateur/Pseudo' et 'Email' par 'Prénom et Nom (RP)', 'ID' et 'Nom d'utilisateur Discord'.",
+      "Pré-remplissage automatique des champs avec les données des paramètres utilisateur (si configurés).",
+      "Mise à jour des embeds Discord avec formatage amélioré : nom RP en gras, ID entre parenthèses, champ Discord séparé.",
+      "Validation renforcée avec vérification obligatoire de tous les nouveaux champs.",
+      "Cohérence avec l'écosystème RP : utilisation des mêmes données que dans les autres pages de l'application."
+    ]
+  },
+  {
+    "version": "v1.10.1",
+    "date": "07/10/2025 - 09:45",
+    "changes": [
+      "Intégration complète des webhooks Discord pour l'envoi automatique des suggestions et bugs.",
+      "Création d'embeds Discord joliment formatés avec couleurs distinctes (vert pour suggestions, rouge pour bugs).",
+      "Mention automatique du développeur (@422404651577638943) à chaque soumission.",
+      "Système de feedback visuel amélioré : bouton avec états 'Envoi en cours', 'Envoyé' avec animations.",
+      "Gestion intelligente des erreurs avec fallback automatique vers l'ancien système de copie.",
+      "Embeds enrichis avec emojis, timestamps, footer avec version AideSAMS, et champs structurés.",
+      "Suppression de l'étape manuelle : l'utilisateur n'a plus besoin de copier-coller sur Discord."
+    ]
+  },
+  {
+    "version": "v1.10.0",
+    "date": "07/10/2025 - 09:30",
+    "changes": [
+      "🎉 Ajout majeur : Nouvelle page 'Suggestions/Bugs' avec interface complète de soumission.",
+      "Système de sous-navigation à onglets : '💡 Suggestions' et '🐛 Bugs' avec interfaces dédiées.",
+      "Formulaires intelligents avec catégorisation (suggestions) et niveaux de gravité (bugs).",
+      "Sauvegarde automatique des données pendant la saisie avec restauration au rechargement.",
+      "Historique local des 50 dernières soumissions pour suivi utilisateur.",
+      "Interface cohérente avec le design system AideSAMS : cartes, couleurs, animations.",
+      "Zone d'instructions contextuelles qui s'adaptent selon le type sélectionné.",
+      "Boutons d'action unifiés : 'Vider le formulaire' et 'Soumettre' avec feedback visuel.",
+      "Intégration complète dans la navigation de toutes les pages existantes.",
+      "Gestion des spécialités utilisateur (affichage conditionnel des onglets PH/Professeur).",
+      "Chargement automatique de la version depuis changelog.json.",
+      "Système de validation des champs obligatoires avant soumission."
+    ]
+  },
+  {
     "version": "v1.9.0",
     "date": "07/10/2025 - 20:30",
     "changes": [

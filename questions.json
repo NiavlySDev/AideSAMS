@@ -1,0 +1,62 @@
+[
+    {
+        "id" : 1,
+        "question" : "Comment puis-je soumettre une suggestion ou signaler un bug ?",
+        "answer" : "Pour soumettre une suggestion ou signaler un bug, rendez-vous sur la page des suggestions.",
+        "link" : "suggestions.html"
+    },
+    {
+        "id" : 2,
+        "question" : "Ou puis-je faire mes rapports de soins?",
+        "answer" : "Vous pouvez faire vos rapports de soins sur la page dédiée aux rapports.",
+        "link" : "rapports.html"
+    },
+    {
+        "id" : 3,
+        "question" : "Ou puis-je faire mes rapports de refus de soins?",
+        "answer" : "Vous pouvez faire vos rapports de refus de soins sur la page dédiée aux refus de soins.",
+        "link" : "refus_de_soin.html"
+    },
+    {
+        "id" : 4,
+        "question" : "Ou puis-je faire mes rapports de Morgue?",
+        "answer" : "Vous pouvez faire vos rapports de Morgue sur la page dédiée aux rapports de Morgue.",
+        "link" : "morgue.html"
+    },
+    {
+        "id" : 5,
+        "question" : "Ou puis-je faire mes rapports d'impayés?",
+        "answer" : "Vous pouvez faire vos rapports d'impayés sur la page dédiée aux rapports d'impayés.",
+        "link" : "impayes.html"
+    },
+    {
+        "id" : 6,
+        "question" : "Ou puis-je faire mes rapports LSPD?",
+        "answer" : "Vous pouvez faire vos rapports LSPD sur la page dédiée aux rapports LSPD.",
+        "link" : "lspd.html"
+    },
+    {
+        "id" : 7,
+        "question" : "Ou puis-je faire mes rapports de Pilote Héliporté?",
+        "answer" : "Vous pouvez faire vos rapports de Pilote Héliporté sur la page dédiée aux rapports de Pilote Héliporté.",
+        "link" : "ph.html"
+    },
+    {
+        "id" : 8,
+        "question" : "Ou puis-je faire mes rapports de Professeur?",
+        "answer" : "Vous pouvez faire vos rapports de Professeur sur la page dédiée aux rapports de Professeur.",
+        "link" : "professeur.html"
+    },
+    {
+        "id" : 9,
+        "question" : "Ou puis-je voir tous les manuels?",
+        "answer" : "Vous pouvez voir tous les manuels sur la page dédiée aux manuels.",
+        "link" : "manuels.html"
+    },
+    {
+        "id" : 10,
+        "question" : "Ou puis-je modifier mes paramètres?",
+        "answer" : "Vous pouvez modifier vos paramètres sur la page de paramètres.",
+        "link" : "parametres.html"
+    }
+]
