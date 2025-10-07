@@ -1,78 +1,292 @@
 [ 
   {
+    "version": "v1.11.1",
+    "date": "07/10/2025 - 10:45",
+    "changes": [
+      {
+        "text": "🎨 Refonte complète de la page Changelog dans informations.html pour gérer les nouveaux formats annotés.",
+        "type": "global"
+      },
+      {
+        "text": "Support intelligent des deux formats : ancien (strings) et nouveau (objets avec text/type).",
+        "type": "secondaire"
+      },
+      {
+        "text": "Affichage visuel différencié : changements globaux (🎯 fond bleu) vs secondaires (🔧 fond gris).",
+        "type": "global"
+      },
+      {
+        "text": "Système de filtrage dynamique : '📋 Tous les changements' ou '🎯 Changements principaux uniquement'.",
+        "type": "global"
+      },
+      {
+        "text": "Icônes distinctives et styles CSS pour identifier rapidement l'importance des changements.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Filtrage en temps réel sans rechargement de page avec mise à jour des boutons actifs.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Versions automatiquement masquées si aucun changement ne correspond au filtre appliqué.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Correction du bug d'affichage '[object Object]' remplacé par un rendu HTML propre.",
+        "type": "global"
+      }
+    ]
+  },
+  {
+    "version": "v1.11.0",
+    "date": "07/10/2025 - 10:30",
+    "changes": [
+      {
+        "text": "🔔 Nouveau système de notifications de mise à jour automatique sur toutes les pages.",
+        "type": "global"
+      },
+      {
+        "text": "Détection intelligente des nouvelles versions depuis la dernière visite utilisateur.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Affichage modal centré avec résumé des changements principaux uniquement (filtre global vs secondaire).",
+        "type": "secondaire"
+      },
+      {
+        "text": "Interface élégante avec design glassmorphism cohérent, animations et responsive.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Système de persistance : l'utilisateur ne voit plus la notification une fois fermée jusqu'à la prochaine mise à jour.",
+        "type": "global"
+      },
+      {
+        "text": "Boutons d'action : 'Plus tard' (reporte) et 'J'ai compris' (marque comme vu définitivement).",
+        "type": "secondaire"
+      },
+      {
+        "text": "Annotation complète du changelog avec types 'global' et 'secondaire' pour un filtrage intelligent.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Intégration sur toutes les pages de l'application avec chargement automatique au DOM ready.",
+        "type": "secondaire"
+      }
+    ]
+  },
+  {
     "version": "v1.10.3",
     "date": "07/10/2025 - 10:15",
     "changes": [
-      "🔇 Amélioration UX : Suppression complète de toutes les alertes et confirmations dans la page Suggestions/Bugs.",
-      "Suppression des alertes de validation : les erreurs de champs vides n'interrompent plus l'utilisateur.",
-      "Suppression des alertes de succès : confirmation d'envoi Discord via feedback visuel uniquement.",
-      "Suppression des alertes d'erreur : erreurs loggées silencieusement dans la console pour le débogage.",
-      "Suppression du dialogue de confirmation lors du vidage des formulaires : action immédiate.",
-      "Suppression de l'alerte 'Copié !' dans la modale de messages : copie silencieuse.",
-      "Expérience utilisateur fluidifiée : plus d'interruptions par des pop-ups, workflow continu.",
-      "Conservation du logging d'erreurs pour le support technique via console.error()."
+      {
+        "text": "🔇 Amélioration UX : Suppression complète de toutes les alertes et confirmations dans la page Suggestions/Bugs.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Suppression des alertes de validation : les erreurs de champs vides n'interrompent plus l'utilisateur.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Suppression des alertes de succès : confirmation d'envoi Discord via feedback visuel uniquement.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Suppression des alertes d'erreur : erreurs loggées silencieusement dans la console pour le débogage.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Suppression du dialogue de confirmation lors du vidage des formulaires : action immédiate.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Suppression de l'alerte 'Copié !' dans la modale de messages : copie silencieuse.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Expérience utilisateur fluidifiée : plus d'interruptions par des pop-ups, workflow continu.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Conservation du logging d'erreurs pour le support technique via console.error().",
+        "type": "secondaire"
+      }
     ]
   },
   {
     "version": "v1.10.2",
     "date": "07/10/2025 - 10:00",
     "changes": [
-      "Refonte complète des formulaires de soumission pour intégrer les informations RP.",
-      "Remplacement des champs 'Nom d'utilisateur/Pseudo' et 'Email' par 'Prénom et Nom (RP)', 'ID' et 'Nom d'utilisateur Discord'.",
-      "Pré-remplissage automatique des champs avec les données des paramètres utilisateur (si configurés).",
-      "Mise à jour des embeds Discord avec formatage amélioré : nom RP en gras, ID entre parenthèses, champ Discord séparé.",
-      "Validation renforcée avec vérification obligatoire de tous les nouveaux champs.",
-      "Cohérence avec l'écosystème RP : utilisation des mêmes données que dans les autres pages de l'application."
+      {
+        "text": "Refonte complète des formulaires de soumission pour intégrer les informations RP.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Remplacement des champs 'Nom d'utilisateur/Pseudo' et 'Email' par 'Prénom et Nom (RP)', 'ID' et 'Nom d'utilisateur Discord'.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Pré-remplissage automatique des champs avec les données des paramètres utilisateur (si configurés).",
+        "type": "secondaire"
+      },
+      {
+        "text": "Mise à jour des embeds Discord avec formatage amélioré : nom RP en gras, ID entre parenthèses, champ Discord séparé.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Validation renforcée avec vérification obligatoire de tous les nouveaux champs.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Cohérence avec l'écosystème RP : utilisation des mêmes données que dans les autres pages de l'application.",
+        "type": "secondaire"
+      }
     ]
   },
   {
     "version": "v1.10.1",
     "date": "07/10/2025 - 09:45",
     "changes": [
-      "Intégration complète des webhooks Discord pour l'envoi automatique des suggestions et bugs.",
-      "Création d'embeds Discord joliment formatés avec couleurs distinctes (vert pour suggestions, rouge pour bugs).",
-      "Mention automatique du développeur (@422404651577638943) à chaque soumission.",
-      "Système de feedback visuel amélioré : bouton avec états 'Envoi en cours', 'Envoyé' avec animations.",
-      "Gestion intelligente des erreurs avec fallback automatique vers l'ancien système de copie.",
-      "Embeds enrichis avec emojis, timestamps, footer avec version AideSAMS, et champs structurés.",
-      "Suppression de l'étape manuelle : l'utilisateur n'a plus besoin de copier-coller sur Discord."
+      {
+        "text": "Intégration complète des webhooks Discord pour l'envoi automatique des suggestions et bugs.",
+        "type": "global"
+      },
+      {
+        "text": "Création d'embeds Discord joliment formatés avec couleurs distinctes (vert pour suggestions, rouge pour bugs).",
+        "type": "secondaire"
+      },
+      {
+        "text": "Mention automatique du développeur (@422404651577638943) à chaque soumission.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Système de feedback visuel amélioré : bouton avec états 'Envoi en cours', 'Envoyé' avec animations.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Gestion intelligente des erreurs avec fallback automatique vers l'ancien système de copie.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Embeds enrichis avec emojis, timestamps, footer avec version AideSAMS, et champs structurés.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Suppression de l'étape manuelle : l'utilisateur n'a plus besoin de copier-coller sur Discord.",
+        "type": "secondaire"
+      }
     ]
   },
   {
     "version": "v1.10.0",
     "date": "07/10/2025 - 09:30",
     "changes": [
-      "🎉 Ajout majeur : Nouvelle page 'Suggestions/Bugs' avec interface complète de soumission.",
-      "Système de sous-navigation à onglets : '💡 Suggestions' et '🐛 Bugs' avec interfaces dédiées.",
-      "Formulaires intelligents avec catégorisation (suggestions) et niveaux de gravité (bugs).",
-      "Sauvegarde automatique des données pendant la saisie avec restauration au rechargement.",
-      "Historique local des 50 dernières soumissions pour suivi utilisateur.",
-      "Interface cohérente avec le design system AideSAMS : cartes, couleurs, animations.",
-      "Zone d'instructions contextuelles qui s'adaptent selon le type sélectionné.",
-      "Boutons d'action unifiés : 'Vider le formulaire' et 'Soumettre' avec feedback visuel.",
-      "Intégration complète dans la navigation de toutes les pages existantes.",
-      "Gestion des spécialités utilisateur (affichage conditionnel des onglets PH/Professeur).",
-      "Chargement automatique de la version depuis changelog.json.",
-      "Système de validation des champs obligatoires avant soumission."
+      {
+        "text": "🎉 Ajout majeur : Nouvelle page 'Suggestions/Bugs' avec interface complète de soumission.",
+        "type": "global"
+      },
+      {
+        "text": "Système de sous-navigation à onglets : '💡 Suggestions' et '🐛 Bugs' avec interfaces dédiées.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Formulaires intelligents avec catégorisation (suggestions) et niveaux de gravité (bugs).",
+        "type": "secondaire"
+      },
+      {
+        "text": "Sauvegarde automatique des données pendant la saisie avec restauration au rechargement.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Historique local des 50 dernières soumissions pour suivi utilisateur.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Interface cohérente avec le design system AideSAMS : cartes, couleurs, animations.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Zone d'instructions contextuelles qui s'adaptent selon le type sélectionné.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Boutons d'action unifiés : 'Vider le formulaire' et 'Soumettre' avec feedback visuel.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Intégration complète dans la navigation de toutes les pages existantes.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Gestion des spécialités utilisateur (affichage conditionnel des onglets PH/Professeur).",
+        "type": "secondaire"
+      },
+      {
+        "text": "Chargement automatique de la version depuis changelog.json.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Système de validation des champs obligatoires avant soumission.",
+        "type": "secondaire"
+      },
+      {
+        "text": "🗑️ Suppression complète des anciennes bannières notif-bug sur toutes les pages : plus d'interruption visuelle.",
+        "type": "global"
+      }
     ]
   },
   {
     "version": "v1.9.0",
     "date": "07/10/2025 - 20:30",
     "changes": [
-      "Refonte complète de la page Professeur avec système de sous-navigation à onglets.",
-      "Ajout du type de rapport 'Demande de Points' avec interface dédiée et template spécialisé.",
-      "Système de gestion séparée des deux types de rapports (Rapport de Note et Demande de Points).",
-      "Interface dynamique pour l'ajout/suppression de professeurs et participants multiples.",
-      "Formatage automatique des dates (DD/MM/YYYY) et heures (HH:MM) dans les demandes de points.",
-      "Sauvegarde indépendante des données pour chaque type de rapport dans localStorage.",
-      "Affichage automatique du template de rapport dès le chargement de la page (plus de zone vide).",
-      "Correction du système de notification pliable pour la barre d'information de bugs.",
-      "Ajout de l'affichage automatique de la version dans le header depuis changelog.json.",
-      "Amélioration de l'expérience utilisateur avec des templates pré-remplis et des placeholders informatifs.",
-      "Validation et limitation automatique des valeurs d'entrée pour les notes EMT.",
-      "Interface cohérente et responsive pour tous les types de rapports professeur.",
-      "Gestion multi-rapports avec onglets dynamiques pour chaque type séparément."
+      {
+        "text": "Refonte complète de la page Professeur avec système de sous-navigation à onglets.",
+        "type": "global"
+      },
+      {
+        "text": "Système de gestion séparée des deux types de rapports (Rapport de Note et Demande de Points).",
+        "type": "secondaire"
+      },
+      {
+        "text": "Interface dynamique pour l'ajout/suppression de professeurs et participants multiples.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Formatage automatique des dates (DD/MM/YYYY) et heures (HH:MM) dans les demandes de points.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Sauvegarde indépendante des données pour chaque type de rapport dans localStorage.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Affichage automatique du template de rapport dès le chargement de la page (plus de zone vide).",
+        "type": "secondaire"
+      },
+      {
+        "text": "Correction du système de notification pliable pour la barre d'information de bugs.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Ajout de l'affichage automatique de la version dans le header depuis changelog.json.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Amélioration de l'expérience utilisateur avec des templates pré-remplis et des placeholders informatifs.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Validation et limitation automatique des valeurs d'entrée pour les notes EMT.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Interface cohérente et responsive pour tous les types de rapports professeur.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Gestion multi-rapports avec onglets dynamiques pour chaque type séparément.",
+        "type": "secondaire"
+      }
     ]
   },
   {
@@ -105,13 +319,30 @@
     "version": "v1.8.0",
     "date": "05/10/2025 - 22:20",
     "changes": [
-      "Ajout complet de la page Professeur avec deux types de rapports : Rapport de Note et Demande de Points.",
-      "Implémentation du système de grades et spécialités dans les paramètres utilisateur.",
-      "Navigation conditionnelle : onglets PH et Professeur visibles uniquement selon les spécialités.",
-      "Refonte de l'interface avec disposition horizontale des cartes sur toutes les pages.",
-      "Ajout de la validation automatique des notes avec limitation des valeurs maximales.",
-      "Amélioration du style des boutons de sous-navigation avec animations cohérentes.",
-      "Remplissage automatique des champs professeur avec les données utilisateur."
+      {
+        "text": "Ajout complet de la page Professeur avec deux types de rapports : Rapport de Note et Demande de Points.",
+        "type": "global"
+      },
+      {
+        "text": "Implémentation du système de grades et spécialités dans les paramètres utilisateur.",
+        "type": "global"
+      },
+      {
+        "text": "Navigation conditionnelle : onglets PH et Professeur visibles uniquement selon les spécialités.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Ajout de la validation automatique des notes avec limitation des valeurs maximales.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Amélioration du style des boutons de sous-navigation avec animations cohérentes.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Remplissage automatique des champs professeur avec les données utilisateur.",
+        "type": "secondaire"
+      }
     ]
   },
   {

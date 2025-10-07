@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informations & Versions - Aide SAMS</title>
     <link rel="stylesheet" href="style.css">
+    <script src="update-notifier.js"></script>
     <style>
         .info-container {
             max-width: 900px;
@@ -79,6 +80,56 @@
             margin-bottom: 0;
             padding-left: 18px;
         }
+        .change-global {
+            background: rgba(74, 158, 255, 0.1);
+            border-left: 3px solid #4a9eff;
+            padding: 8px 12px;
+            margin: 6px 0;
+            border-radius: 6px;
+            list-style: none;
+        }
+        .change-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid #666;
+            padding: 6px 12px;
+            margin: 4px 0;
+            border-radius: 4px;
+            list-style: none;
+            font-size: 0.95em;
+            opacity: 0.8;
+        }
+        .change-icon {
+            margin-right: 8px;
+            font-size: 14px;
+        }
+        .version-list li:not(.change-global):not(.change-secondary) {
+            margin: 4px 0;
+        }
+        .changelog-filters {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+        .filter-btn.active {
+            background: #4a9eff;
+            border-color: #4a9eff;
+            color: white;
+        }
         @media (max-width: 900px) {
             .changelog-cards { flex-direction: column; gap: 18px; }
             .version-card { max-width: 98vw; min-width: unset; }
@@ -87,7 +138,6 @@
 </head>
 <body>
     
-    <button id="notif-toggle" onclick="document.getElementById('notif-bug').style.display='inline-flex';this.style.display='none';" style="display:none;background:#ef4444;color:#fff;border:none;border-radius:50%;width:28px;height:28px;align-items:center;justify-content:center;position:relative;left:50%;transform:translateX(-50%);margin-bottom:18px;cursor:pointer;font-size:1.15em;box-shadow:0 2px 8px #0002;">?</button>
    <div class="header" style="display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:18px;margin-bottom:18px;position:relative;">
         <h1 style="margin:0;text-align:center;flex:1;">Aide SAMS</h1>
         <div style="display:flex;align-items:center;gap:12px;margin-left:18px;">
@@ -130,22 +180,85 @@
 
     <div class="changelog-global">
         <div class="changelog-title">Changelog</div>
+        <div class="changelog-filters" style="text-align: center; margin-bottom: 24px;">
+            <button class="filter-btn active" onclick="filterChanges('all')" id="filter-all">
+                📋 Tous les changements
+            </button>
+            <button class="filter-btn" onclick="filterChanges('global')" id="filter-global">
+                🎯 Changements principaux uniquement
+            </button>
+        </div>
         <div class="changelog-cards">
         </div>
     </div>
     <script>
-    fetch('changelog.json')
-      .then(res => res.json())
-      .then(data => {
-        const container = document.querySelector('.changelog-cards');
-        container.innerHTML = data.map(version => `
+    let changelogData = [];
+    let currentFilter = 'all';
+
+    function renderChangelog(filterType = 'all') {
+      const container = document.querySelector('.changelog-cards');
+      
+      if (!changelogData.length) {
+        container.innerHTML = '<div style="color:#ef4444;">Aucune donnée de changelog disponible.</div>';
+        return;
+      }
+
+      container.innerHTML = changelogData.map(version => {
+        // Gérer les changements (format objet ou string)
+        const changesList = version.changes
+          .filter(change => {
+            if (filterType === 'global') {
+              return typeof change === 'object' && change.type === 'global';
+            }
+            return true; // Afficher tous les changements
+          })
+          .map(change => {
+            // Si c'est un objet avec text et type
+            if (typeof change === 'object' && change.text) {
+              const typeIcon = change.type === 'global' ? '🎯' : '🔧';
+              const typeClass = change.type === 'global' ? 'change-global' : 'change-secondary';
+              return `<li class="${typeClass}"><span class="change-icon">${typeIcon}</span> ${change.text}</li>`;
+            }
+            // Si c'est une string (ancien format)
+            else if (typeof change === 'string') {
+              return `<li>${change}</li>`;
+            }
+            return '';
+          }).join('');
+        
+        // Ne pas afficher la version si aucun changement après filtrage
+        if (!changesList.trim()) {
+          return '';
+        }
+        
+        return `
           <div class="version-card">
             <div class="version-header">${version.version} <span class="version-date">${version.date}</span></div>
             <ul class="version-list">
-              ${version.changes.map(change => `<li>${change}</li>`).join('')}
+              ${changesList}
             </ul>
           </div>
-        `).join('');
+        `;
+      }).filter(card => card.trim()).join('');
+    }
+
+    function filterChanges(type) {
+      currentFilter = type;
+      
+      // Mettre à jour les boutons
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(`filter-${type}`).classList.add('active');
+      
+      // Re-render avec le nouveau filtre
+      renderChangelog(type);
+    }
+
+    // Charger les données
+    fetch('changelog.json')
+      .then(res => res.json())
+      .then(data => {
+        changelogData = data;
+        renderChangelog(currentFilter);
       })
       .catch(() => {
         document.querySelector('.changelog-cards').innerHTML = '<div style="color:#ef4444;">Impossible de charger le changelog.</div>';
