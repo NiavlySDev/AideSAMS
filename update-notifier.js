@@ -90,41 +90,42 @@ class UpdateNotifier {
 
         modal.innerHTML = `
             <div class="update-header">
-                <div class="update-icon">🆕</div>
-                <h2>Nouvelles mises à jour disponibles !</h2>
-                <div class="update-version-range">
-                    ${versions.length === 1 ? 
-                        `Version ${versions[0].version}` : 
-                        `${versions.length} nouvelles versions (${versions[versions.length-1].version} → ${versions[0].version})`
-                    }
-                </div>
+            <div class="update-icon">🚀</div>
+            <h2>Nouvelles mises à jour disponibles !</h2>
+            <div class="update-version-range">
+                ${versions.length === 1 ? 
+                `Version ${versions[0].version}` : 
+                `${versions.length} nouvelles versions (${versions[versions.length-1].version} → ${versions[0].version})`
+                }
+            </div>
             </div>
             
             <div class="update-content">
-                <h3>🎯 Changements principaux :</h3>
-                <div class="global-changes">
-                    ${globalChanges.length > 0 ? 
-                        globalChanges.map(change => `
-                            <div class="change-item global">
-                                <span class="change-icon">✨</span>
-                                <div class="change-content">
-                                    <div class="change-text">${change.text}</div>
-                                    <div class="change-meta">${change.version} - ${change.date}</div>
-                                </div>
-                            </div>
-                        `).join('') :
-                        '<div class="no-major-changes">Améliorations et corrections diverses</div>'
-                    }
-                </div>
-                
-                <div class="update-footer">
-                    <p>📋 <strong>Consulter le changelog complet :</strong> Page Informations → Changelog</p>
-                </div>
+            <h3>🌟 Changements principaux :</h3>
+            <div class="global-changes">
+                ${globalChanges.length > 0 ? 
+                globalChanges.map(change => `
+                    <div class="change-item global">
+                    <span class="change-icon">💡</span>
+                    <div class="change-content">
+                        <div class="change-text">${change.text}</div>
+                        <div class="change-meta">${change.version} - ${change.date}</div>
+                    </div>
+                    </div>
+                `).join('') :
+                '<div class="no-major-changes">Améliorations et corrections diverses</div>'
+                }
+            </div>
+            
+            <div class="update-footer">
+                <p>📋 <strong>Consulter le changelog complet :</strong> Page Informations → Changelog</p>
+                <p>🔄 N\'hésitez pas à faire Shift + F5 pour recharger la page si vous voyez encore les pages retirées</p>
+            </div>
             </div>
             
             <div class="update-actions">
-                <button class="btn-secondary" onclick="updateNotifier.dismissNotification(false)">Plus tard</button>
-                <button class="btn-primary" onclick="updateNotifier.dismissNotification(true)">J'ai compris ✓</button>
+            <button class="btn-secondary" onclick="updateNotifier.dismissNotification(false)">Plus tard</button>
+            <button class="btn-primary" onclick="updateNotifier.dismissNotification(true)">J'ai compris ✓</button>
             </div>
         `;
         
