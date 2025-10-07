@@ -1,5 +1,45 @@
 [ 
   {
+    "version": "v1.11.3",
+    "date": "07/10/2025 - 14:30",
+    "changes": [
+      {
+        "text": "Retrait de tout ce qui est lié aux statistiques (bouton dans la nav, page, CSS, JS, etc.)",
+        "type": "global"
+      }
+    ]
+  },
+  {
+    "version": "v1.11.2",
+    "date": "07/10/2025 - 12:30",
+    "changes": [
+      {
+        "text": "🐛 Correction du bug de couleur du statut 'Inapte' qui s'affichait en vert au lieu de rouge",
+        "type": "global"
+      },
+      {
+        "text": "🔄 Correction du bug de mise à jour en temps réel des notes dans professeur.html",
+        "type": "global"
+      },
+      {
+        "text": "📊 Les changements de notes mettent maintenant à jour automatiquement le statut (Apte/Inapte) et le rapport généré",
+        "type": "global"
+      },
+      {
+        "text": "🛠️ Amélioration de la fonction calculateNotes() avec vérifications d'existence des éléments DOM",
+        "type": "secondaire"
+      },
+      {
+        "text": "⚡ Optimisation du flux de calcul et de mise à jour des templates dans l'interface de notation",
+        "type": "secondaire"
+      },
+      {
+        "text": "🔍 Ajout de vérifications pour éviter les erreurs JavaScript lors des calculs de notes",
+        "type": "secondaire"
+      }
+    ]
+  },
+  {
     "version": "v1.11.1",
     "date": "07/10/2025 - 10:45",
     "changes": [

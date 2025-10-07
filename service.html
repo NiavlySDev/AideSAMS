@@ -36,7 +36,6 @@
         <button class="nav-tab" id="ph-tab" onclick="location.href='ph.html'">PH</button>
         <button class="nav-tab" id="prof-tab" onclick="location.href='professeur.html'">Professeur</button>
         <button class="nav-tab" onclick="location.href='manuels.html'">Manuels</button>
-        <button class="nav-tab" onclick="location.href='statistiques.html'">Statistiques</button>
         <button class="nav-tab" onclick="location.href='parametres.html'">Paramètres</button>
         <button class="nav-tab" onclick="location.href='suggestions.html'">Suggestions/Bugs</button>
     </nav>
@@ -154,7 +153,6 @@
                             <button type="button" class="btn" style="padding:2px 8px;font-size:13px;" onclick="setNow('fds')">Maintenant</button>
                         </div>
                     </div>
-                    <button class="btn" onclick="saveServiceStats()" style="margin-top:12px;">💾 Sauvegarder ce service pour statistiques</button>
                 `
                 },
                 {
@@ -340,21 +338,6 @@ ${total ? `<b>**Total : ${total}**</b>` : ""}
         renderCards();
         renderTemplate();
 
-        function saveServiceStats() {
-            const s = services[currentService];
-            const toSave = JSON.parse(JSON.stringify(s));
-            if (!toSave.date) {
-                const now = new Date();
-                toSave.date = now.toISOString().slice(0, 10);
-            }
-            let stats = [];
-            try {
-                stats = JSON.parse(localStorage.getItem('sams_stats_services') || '[]');
-            } catch (e) { }
-            stats.push(toSave);
-            localStorage.setItem('sams_stats_services', JSON.stringify(stats));
-            alert("Service sauvegardé pour les statistiques !");
-        }
         // Gestion de l'affichage des onglets selon les spécialités
         function updateSpecialityTabs() {
             const params = JSON.parse(localStorage.getItem('sams_params') || '{}');

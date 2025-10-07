@@ -36,7 +36,6 @@
         <button class="nav-tab" id="ph-tab" onclick="location.href='ph.html'">PH</button>
         <button class="nav-tab active" id="prof-tab" onclick="location.href='professeur.html'">Professeur</button>
         <button class="nav-tab" onclick="location.href='manuels.html'">Manuels</button>
-        <button class="nav-tab" onclick="location.href='statistiques.html'">Statistiques</button>
         <button class="nav-tab" onclick="location.href='parametres.html'">Paramètres</button>
         <button class="nav-tab" onclick="location.href='suggestions.html'">Suggestions/Bugs</button>
     </nav>
@@ -142,7 +141,7 @@
                     <span>Note totale : <span id="noteFinale">0</span>/20</span>
                 </div>
                 <div class="form-group" style="font-weight:bold;margin-top:10px;">
-                    <span>Statut : <span id="statut" style="color:#22c55e;">Inapte</span></span>
+                    <span>Statut : <span id="statut" style="color:#ef4444;">Inapte</span></span>
                 </div>
             </div>
         </div>
@@ -439,34 +438,58 @@
         }
 
         function calculateNotes() {
-            const piliers = parseFloat(document.getElementById('notePiliers').value) || 0;
-            const hierarchie = parseFloat(document.getElementById('noteHierarchie').value) || 0;
-            const protocole = parseFloat(document.getElementById('noteProtocole').value) || 0;
-            const specialites = parseFloat(document.getElementById('noteSpecialites').value) || 0;
-            const codesRadios = parseFloat(document.getElementById('noteCodesRadios').value) || 0;
+            // Vérifier que les éléments existent
+            const pilierInput = document.getElementById('notePiliers');
+            const hierarchieInput = document.getElementById('noteHierarchie');
+            const protocoleInput = document.getElementById('noteProtocole');
+            const specialitesInput = document.getElementById('noteSpecialites');
+            const codesRadiosInput = document.getElementById('noteCodesRadios');
+            const typeBlessuresInput = document.getElementById('noteTypeBlessures');
+            const rapportInput = document.getElementById('noteRapport');
+            const miseEnSituationInput = document.getElementById('noteMiseEnSituation');
+            const connaissanceHopitalInput = document.getElementById('noteConnaissanceHopital');
 
-            const typeBlessures = parseFloat(document.getElementById('noteTypeBlessures').value) || 0;
-            const rapport = parseFloat(document.getElementById('noteRapport').value) || 0;
-            const miseEnSituation = parseFloat(document.getElementById('noteMiseEnSituation').value) || 0;
-            const connaissanceHopital = parseFloat(document.getElementById('noteConnaissanceHopital').value) || 0;
+            if (!pilierInput || !hierarchieInput || !protocoleInput || !specialitesInput || !codesRadiosInput || 
+                !typeBlessuresInput || !rapportInput || !miseEnSituationInput || !connaissanceHopitalInput) {
+                console.log('Éléments de notes non trouvés');
+                return;
+            }
+
+            const piliers = parseFloat(pilierInput.value) || 0;
+            const hierarchie = parseFloat(hierarchieInput.value) || 0;
+            const protocole = parseFloat(protocoleInput.value) || 0;
+            const specialites = parseFloat(specialitesInput.value) || 0;
+            const codesRadios = parseFloat(codesRadiosInput.value) || 0;
+
+            const typeBlessures = parseFloat(typeBlessuresInput.value) || 0;
+            const rapport = parseFloat(rapportInput.value) || 0;
+            const miseEnSituation = parseFloat(miseEnSituationInput.value) || 0;
+            const connaissanceHopital = parseFloat(connaissanceHopitalInput.value) || 0;
 
             const totalManuel = piliers + hierarchie + protocole + specialites + codesRadios;
             const totalMiseEnSituation = typeBlessures + rapport + miseEnSituation + connaissanceHopital;
             const noteFinale = totalManuel + totalMiseEnSituation;
 
-            document.getElementById('totalManuel').textContent = totalManuel.toFixed(1);
-            document.getElementById('totalMiseEnSituation').textContent = totalMiseEnSituation.toFixed(1);
-            document.getElementById('noteFinale').textContent = noteFinale.toFixed(1);
-
+            const totalManuelEl = document.getElementById('totalManuel');
+            const totalMiseEnSituationEl = document.getElementById('totalMiseEnSituation');
+            const noteFinaleEl = document.getElementById('noteFinale');
             const statutEl = document.getElementById('statut');
-            if (noteFinale >= 12) {
-                statutEl.textContent = 'Apte';
-                statutEl.style.color = '#22c55e';
-            } else {
-                statutEl.textContent = 'Inapte';
-                statutEl.style.color = '#ef4444';
+
+            if (totalManuelEl) totalManuelEl.textContent = totalManuel.toFixed(1);
+            if (totalMiseEnSituationEl) totalMiseEnSituationEl.textContent = totalMiseEnSituation.toFixed(1);
+            if (noteFinaleEl) noteFinaleEl.textContent = noteFinale.toFixed(1);
+
+            if (statutEl) {
+                if (noteFinale >= 12) {
+                    statutEl.textContent = 'Apte';
+                    statutEl.style.color = '#22c55e';
+                } else {
+                    statutEl.textContent = 'Inapte';
+                    statutEl.style.color = '#ef4444';
+                }
             }
 
+            // Mettre à jour le template après le calcul
             updateNoteTemplate();
         }
 
@@ -549,7 +572,7 @@
                             <input type="number" id="noteConnaissanceHopital" min="0" max="2" step="0.1" value="0" oninput="limitAndCalculate(this, 2);">
                         </div>
                         <div class="form-group" style="font-weight:bold;margin-top:10px;">
-                            <span>Statut : <span id="statut" style="color:#22c55e;">Inapte</span></span>
+                            <span>Statut : <span id="statut" style="color:#ef4444;">Inapte</span></span>
                         </div>
                     </div>
                 </div>
@@ -956,6 +979,12 @@ ${participantsText}
             .catch(err => {
                 console.log('Impossible de charger la version:', err);
             });
+
+        // Initialisation au chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNoteRapports();
+            updateNoteTemplate();
+        });
     </script>
 </body>
 
