@@ -2,7 +2,7 @@
     {
         "grade": "Directeur",
         "membres" : [
-            "Jean Dupont"
+            "Jean Dupont | 53931"
         ]
     },
     {
@@ -12,32 +12,32 @@
     {
         "grade": "Superviseur",
         "membres" : [
-            "Vera Tyr"
+            "Vera Tyr | 56912"
         ]
     },
     {
         "grade": "CDS Médecin",
         "membres" : [
-            "Silvia Dupont"
+            "Silvia Dupont | 51337"
         ]
     },
     {
         "grade": "CDS Paramedic",
         "membres" : [
-            "John Gordon"
+            "John Gordon | 54690"
         ]
     },
     {
         "grade": "CDS Infirmier",
         "membres" : [
-            "Hayk Lutter"
+            "Hayk Lutter | 52232"
         ]
     },
     {
         "grade": "Secrétaire",
         "membres" : [
-            "Xavier Gordon",
-            "Arthur Lenz"
+            "Xavier Gordon | 54689",
+            "Arthur Lenz | 45346"
         ]
     }
 ]

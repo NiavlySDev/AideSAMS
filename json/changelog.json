@@ -1,5 +1,71 @@
 [ 
   {
+    "version": "v1.12.2",
+    "date": "07/10/2025 - 15:10",
+    "changes": [
+      {
+        "text": "Ajout du style pour le bouton actualiser de la page hierarchie.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Correction où dans la navbar de hierarchie, professeur et ph ne s'affichait pas alors que l'utilisateur avait la spécialité.",
+        "type": "secondaire"
+      }
+    ]
+  },
+  {
+    "version": "v1.12.1",
+    "date": "07/10/2025 - 15:10",
+    "changes": [
+      {
+        "text": "Réglage du style de la page hierarchie pour une meilleure lisibilité.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Réglage du style de la page specialites pour une meilleure lisibilité.",
+        "type": "secondaire"
+      },
+      {
+        "text": "Changement du nom dans le header de la page spécialités",
+        "type": "secondaire"
+      }
+    ]
+  },
+  {
+    "version": "v1.12.0",
+    "date": "07/10/2025 - 15:30",
+    "changes": [
+      {
+        "text": "🏛️ Nouvelle page Hiérarchie SAMS : affichage complet des grades importants et directions des spécialités",
+        "type": "global"
+      },
+      {
+        "text": "📊 Interface à onglets : 'Grades Importants' et 'Directions Spécialités' avec chargement dynamique depuis JSON",
+        "type": "global"
+      },
+      {
+        "text": "🎨 Design moderne avec cartes hiérarchiques, badges colorés par grade et avatars générés automatiquement",
+        "type": "secondaire"
+      },
+      {
+        "text": "📱 Interface responsive avec grille adaptative pour l'affichage des membres et informations détaillées",
+        "type": "secondaire"
+      },
+      {
+        "text": "🔄 Système d'actualisation des données et gestion des états (chargement, erreur, vide)",
+        "type": "secondaire"
+      },
+      {
+        "text": "🗂️ Structure de données JSON pour grades.json et specialites.json avec informations complètes des membres",
+        "type": "secondaire"
+      },
+      {
+        "text": "🧭 Ajout du bouton 'Hiérarchie' dans la navigation de toutes les pages de l'application",
+        "type": "global"
+      }
+    ]
+  },
+  {
     "version": "v1.11.5",
     "date": "07/10/2025 - 15:10",
     "changes": [
@@ -301,7 +367,7 @@
   },
   {
     "version": "v1.9.0",
-    "date": "07/10/2025 - 20:30",
+    "date": "05/10/2025 - 23:30",
     "changes": [
       {
         "text": "Refonte complète de la page Professeur avec système de sous-navigation à onglets.",
@@ -355,7 +421,7 @@
   },
   {
     "version": "v1.8.2",
-    "date": "05/01/2025 - 23:05",
+    "date": "05/10/2025 - 23:05",
     "changes": [
       {
         "text": "Gestion multi-rapports avec onglets dynamiques pour chaque type séparément.",
@@ -385,7 +451,7 @@
   },
   {
     "version": "v1.8.1",
-    "date": "05/01/2025 - 22:50",
+    "date": "05/10/2025 - 22:50",
     "changes": [
       {
         "text": "Ajout de la page Professeur avec deux types de rapports : Rapport de Note (évaluation EMT) et Demande de Points (formation).",
