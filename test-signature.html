@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Signature - AideSAMS</title>
+</head>
+<body>
+    <h1>Test de signature - Générer un lien de test</h1>
+    <button onclick="createTestSignatureLink()">Créer lien de test</button>
+    
+    <div id="result" style="margin-top: 20px;"></div>
+
+    <script>
+        function createTestSignatureLink() {
+            // Créer des données de test pour un certificat de naissance
+            const testData = {
+                id: 'test-' + Date.now(),
+                type: 'certificat_naissance',
+                patientEmail: 'Parents (Test)',
+                doctorId: 'dr-test',
+                expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+                data: {
+                    enfant_nom: 'Dupont',
+                    enfant_prenom: 'Marie',
+                    enfant_naissance: '07/10/2025',
+                    enfant_lieu: 'Los Santos',
+                    enfant_sexe: 'Féminin',
+                    enfant_poids: '3.2',
+                    enfant_taille: '48',
+                    mere_nom: 'Dupont',
+                    mere_prenom: 'Sophie',
+                    mere_naissance: '15/05/1990',
+                    mere_lieu: 'Los Santos',
+                    mere_profession: 'Infirmière',
+                    pere_nom: 'Dupont',
+                    pere_prenom: 'Jean',
+                    pere_naissance: '22/08/1988',
+                    pere_lieu: 'Los Santos',
+                    pere_profession: 'Ingénieur',
+                    medecin_nom_cert: 'Dr. Martin'
+                },
+                signatures: {},
+                signed: false,
+                patientSignature: null,
+                createdAt: new Date().toISOString()
+            };
+
+            // Sauvegarder dans localStorage
+            const sharedDocuments = JSON.parse(localStorage.getItem('sharedDocuments') || '[]');
+            sharedDocuments.push(testData);
+            localStorage.setItem('sharedDocuments', JSON.stringify(sharedDocuments));
+
+            // Générer le lien
+            const baseUrl = window.location.origin + window.location.pathname.replace('test-signature.html', '');
+            const shareUrl = `${baseUrl}signature.html?id=${testData.id}`;
+
+            document.getElementById('result').innerHTML = `
+                <h3>Lien de test généré :</h3>
+                <p><a href="${shareUrl}" target="_blank">${shareUrl}</a></p>
+                <button onclick="navigator.clipboard.writeText('${shareUrl}')">Copier le lien</button>
+            `;
+        }
+    </script>
+</body>
+</html>

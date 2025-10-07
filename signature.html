@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signature de Document - AideSAMS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .signature-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #8B0000, #DC143C);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+
+        .hospital-name {
+            color: #DC143C;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .document-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .document-preview {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .signature-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            background: #fafafa;
+        }
+
+        .signature-canvas {
+            width: 100%;
+            height: 200px;
+            border: 3px solid #007bff;
+            border-radius: 10px;
+            background: white;
+            cursor: crosshair;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: border-color 0.3s ease;
+        }
+        
+        .signature-canvas:hover {
+            border-color: #0056b3;
+        }
+        
+        .signature-canvas.signing {
+            border-color: #28a745;
+            box-shadow: 0 0 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn {
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn.success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .error {
+            color: #e74c3c;
+            background: #ffeaea;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #e74c3c;
+        }
+
+        .success {
+            color: #27ae60;
+            background: #eafaf1;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #27ae60;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .document-field {
+            margin: 10px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .document-field strong {
+            display: inline-block;
+            width: 150px;
+            color: #333;
+        }
+
+        .signature-info {
+            text-align: left;
+            margin: 20px 0;
+            padding: 15px;
+            background: #e8f4f8;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        @media (max-width: 768px) {
+            .signature-container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .signature-canvas {
+                height: 150px;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="signature-container">
+        <div class="logo">🏥</div>
+        <div class="hospital-name">San Andreas Medical Services</div>
+        <div class="subtitle">Notre Priorité, Votre Santé</div>
+
+        <div id="loadingSection">
+            <div class="loading"></div>
+            Chargement du document...
+        </div>
+
+        <div id="errorSection" class="error" style="display: none;"></div>
+
+        <div id="documentSection" style="display: none;">
+            <h2>Document à signer</h2>
+            
+            <div class="document-info">
+                <div class="document-field">
+                    <strong>Type de document:</strong>
+                    <span id="documentType"></span>
+                </div>
+                <div class="document-field">
+                    <strong>Médecin traitant:</strong>
+                    <span id="doctorName"></span>
+                </div>
+                <div class="document-field">
+                    <strong>Date d'émission:</strong>
+                    <span id="documentDate"></span>
+                </div>
+                <div class="document-field">
+                    <strong>Email du patient:</strong>
+                    <span id="patientEmail"></span>
+                </div>
+                <div class="document-field">
+                    <strong>Expire le:</strong>
+                    <span id="expiryDate"></span>
+                </div>
+            </div>
+
+            <div class="document-preview" id="documentPreview">
+                <!-- Le contenu du document sera inséré ici -->
+            </div>
+
+            <div class="signature-section">
+                <h3>Votre signature</h3>
+                <div class="signature-info">
+                    <strong>Instructions :</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Signez dans la zone ci-dessous avec votre souris ou votre doigt</li>
+                        <li>Votre signature sera ajoutée au document médical</li>
+                        <li>Une fois signé, le document ne pourra plus être modifié</li>
+                        <li>Le médecin sera notifié de votre signature</li>
+                    </ul>
+                </div>
+                
+                <canvas id="signatureCanvas" class="signature-canvas"></canvas>
+                
+                <div>
+                    <button class="btn secondary" onclick="clearSignature()">🗑️ Effacer</button>
+                    <button class="btn" onclick="testCanvas()" style="background: #ff6b35;">🧪 Test Canvas</button>
+                    <button class="btn" onclick="diagnoseCanvas()" style="background: #9b59b6;">🔍 Diagnostic</button>
+                    <button class="btn success" onclick="submitSignature()" id="submitBtn" disabled>✓ Signer le document</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="successSection" class="success" style="display: none;">
+            <h3>✅ Document signé avec succès !</h3>
+            <p>Votre signature a été enregistrée et le médecin a été notifié.</p>
+            <p>Vous pouvez fermer cette page.</p>
+        </div>
+
+        <div id="alreadySignedSection" class="error" style="display: none;">
+            <h3>Document déjà signé</h3>
+            <p>Ce document a déjà été signé et ne peut plus être modifié.</p>
+        </div>
+    </div>
+
+    <script>
+        let isDrawing = false;
+        let canvas = null;
+        let ctx = null;
+        let documentData = null;
+        let hasSignature = false;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCanvas();
+            loadDocument();
+        });
+
+        function initializeCanvas() {
+            canvas = document.getElementById('signatureCanvas');
+            if (!canvas) {
+                console.error('Canvas element not found!');
+                return;
+            }
+            
+            ctx = canvas.getContext('2d');
+            
+            // Attendre que l'élément soit visible et ait des dimensions
+            setTimeout(() => {
+                setupCanvas();
+            }, 100);
+        }
+
+        function setupCanvas() {
+            // Définir des dimensions fixes si le canvas n'a pas de taille
+            const rect = canvas.getBoundingClientRect();
+            const width = rect.width > 0 ? rect.width : 400;
+            const height = rect.height > 0 ? rect.height : 200;
+            
+            // Définir les dimensions du canvas
+            canvas.width = width;
+            canvas.height = height;
+            
+            // Appliquer les styles explicitement
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            
+            // Style de la signature
+            ctx.strokeStyle = '#000000'; // Noir explicite
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            // Fond blanc pour éviter la transparence
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            console.log('Canvas initialized:', canvas.width, 'x', canvas.height);
+            
+            // Événements souris
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+            
+            // Événements tactiles
+            canvas.addEventListener('touchstart', handleTouchStart);
+            canvas.addEventListener('touchmove', handleTouchMove);
+            canvas.addEventListener('touchend', stopDrawing);
+        }
+
+        function startDrawing(e) {
+            if (!canvas || !ctx) {
+                console.error('Canvas not initialized');
+                return;
+            }
+            
+            e.preventDefault();
+            isDrawing = true;
+            canvas.classList.add('signing');
+            
+            const coords = getMousePos(e);
+            
+            // S'assurer que le style est correct
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            ctx.beginPath();
+            ctx.moveTo(coords.x, coords.y);
+            
+            hasSignature = true;
+            updateSubmitButton();
+            
+            console.log('Start drawing at:', coords.x, coords.y);
+        }
+
+        function draw(e) {
+            if (!isDrawing || !canvas || !ctx) return;
+            
+            e.preventDefault();
+            const coords = getMousePos(e);
+            
+            ctx.lineTo(coords.x, coords.y);
+            ctx.stroke();
+            
+            console.log('Drawing to:', coords.x, coords.y);
+        }
+
+        function getMousePos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            return {
+                x: (e.clientX - rect.left) * scaleX,
+                y: (e.clientY - rect.top) * scaleY
+            };
+        }
+
+        function stopDrawing() {
+            if (isDrawing) {
+                canvas.classList.remove('signing');
+                ctx.beginPath();
+                isDrawing = false;
+            }
+        }
+
+        function handleTouchStart(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousedown', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+
+        function handleTouchMove(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+
+        function clearSignature() {
+            if (!canvas || !ctx) {
+                console.warn('Canvas ou contexte non disponible pour effacer');
+                return;
+            }
+            
+            console.log('Effacement de la signature...');
+            
+            // Effacer le canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Remettre un fond blanc bien visible
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Ajouter une bordure subtile pour indiquer la zone de signature
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+            
+            hasSignature = false;
+            updateSubmitButton();
+            
+            console.log('Signature cleared - canvas réinitialisé');
+        }
+
+        function testCanvas() {
+            if (!canvas || !ctx) {
+                console.error('Canvas not available for test');
+                return;
+            }
+            
+            // Dessiner un carré de test
+            ctx.fillStyle = 'red';
+            ctx.fillRect(50, 50, 100, 100);
+            ctx.strokeStyle = 'blue';
+            ctx.lineWidth = 5;
+            ctx.strokeRect(50, 50, 100, 100);
+            
+            console.log('Test rectangle drawn');
+        }
+
+        // Fonction de diagnostic complet
+        function diagnoseCanvas() {
+            console.log('=== DIAGNOSTIC CANVAS ===');
+            const canvas = document.getElementById('signatureCanvas');
+            if (!canvas) {
+                console.error('Canvas non trouvé !');
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            const computedStyle = window.getComputedStyle(canvas);
+
+            console.log('Canvas trouvé:', canvas);
+            console.log('Context 2D:', ctx);
+            console.log('Dimensions canvas:', {
+                width: canvas.width,
+                height: canvas.height,
+                clientWidth: canvas.clientWidth,
+                clientHeight: canvas.clientHeight,
+                offsetWidth: canvas.offsetWidth,
+                offsetHeight: canvas.offsetHeight
+            });
+            console.log('Position:', {
+                top: rect.top,
+                left: rect.left,
+                right: rect.right,
+                bottom: rect.bottom,
+                width: rect.width,
+                height: rect.height
+            });
+            console.log('Style CSS:', {
+                width: computedStyle.width,
+                height: computedStyle.height,
+                display: computedStyle.display,
+                visibility: computedStyle.visibility,
+                opacity: computedStyle.opacity,
+                backgroundColor: computedStyle.backgroundColor,
+                border: computedStyle.border
+            });
+
+            // Test de dessin visible avec fond blanc
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Fond blanc pour contraste
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Bordure noire pour délimiter
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
+            
+            // Test de texte
+            ctx.fillStyle = 'black';
+            ctx.font = '16px Arial';
+            ctx.fillText('DIAGNOSTIC - Canvas OK', 20, 30);
+            
+            // Croix centrale rouge
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(centerX - 20, centerY - 20);
+            ctx.lineTo(centerX + 20, centerY + 20);
+            ctx.moveTo(centerX + 20, centerY - 20);
+            ctx.lineTo(centerX - 20, centerY + 20);
+            ctx.stroke();
+            
+            console.log('Test de diagnostic effectué - vérifiez visuellement le canvas');
+            return true;
+        }
+
+        function updateSubmitButton() {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = !hasSignature;
+        }
+
+        function loadDocument() {
+            // Récupérer l'ID du document depuis l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const documentId = urlParams.get('id');
+            
+            if (!documentId) {
+                showError('Lien invalide - ID de document manquant');
+                return;
+            }
+            
+            // Charger le document depuis localStorage (simulation)
+            const sharedDocuments = JSON.parse(localStorage.getItem('sharedDocuments') || '[]');
+            documentData = sharedDocuments.find(doc => doc.id === documentId);
+            
+            if (!documentData) {
+                showError('Document introuvable ou lien expiré');
+                return;
+            }
+            
+            // Vérifier l'expiration
+            const now = new Date();
+            const expiryDate = new Date(documentData.expiresAt);
+            
+            if (now > expiryDate) {
+                showError('Ce lien a expiré. Veuillez contacter votre médecin pour un nouveau lien.');
+                return;
+            }
+            
+            // Vérifier si déjà signé
+            if (documentData.signed) {
+                document.getElementById('loadingSection').style.display = 'none';
+                document.getElementById('alreadySignedSection').style.display = 'block';
+                return;
+            }
+            
+            // Afficher le document
+            displayDocument();
+        }
+
+        function displayDocument() {
+            // Masquer la section de chargement
+            document.getElementById('loadingSection').style.display = 'none';
+            
+            // Remplir les informations
+            document.getElementById('documentType').textContent = getDocumentTypeName(documentData.type);
+            document.getElementById('doctorName').textContent = getDoctorName();
+            document.getElementById('documentDate').textContent = new Date().toLocaleDateString('fr-FR');
+            document.getElementById('patientEmail').textContent = documentData.patientEmail;
+            document.getElementById('expiryDate').textContent = new Date(documentData.expiresAt).toLocaleString('fr-FR');
+            
+            // Générer l'aperçu du document
+            generateDocumentPreview();
+            
+            // Afficher la section principale
+            document.getElementById('documentSection').style.display = 'block';
+            
+            // S'assurer que le canvas est bien initialisé après l'affichage
+            setTimeout(() => {
+                console.log('Re-initialisation du canvas après affichage du document');
+                initializeCanvas();
+            }, 100);
+        }
+
+        function getDocumentTypeName(type) {
+            const types = {
+                'arret_travail': 'Avis d\'arrêt de travail',
+                'certificat_naissance': 'Certificat de naissance',
+                'facture_hospitalisation': 'Facture d\'hospitalisation'
+            };
+            return types[type] || type;
+        }
+
+        function getDoctorName() {
+            const data = documentData.data;
+            if (data.medecin_nom && data.medecin_prenom) {
+                return `Dr. ${data.medecin_prenom} ${data.medecin_nom}`;
+            }
+            if (data.medecin_nom_cert) {
+                return `Dr. ${data.medecin_nom_cert}`;
+            }
+            if (data.facture_medecin) {
+                return `Dr. ${data.facture_medecin}`;
+            }
+            return 'Médecin non spécifié';
+        }
+
+        function generateDocumentPreview() {
+            const preview = document.getElementById('documentPreview');
+            const data = documentData.data;
+            let content = '';
+            
+            switch (documentData.type) {
+                case 'arret_travail':
+                    content = `
+                        <h4>Avis d'arrêt de travail</h4>
+                        <p><strong>Patient:</strong> ${data.patient_prenom || ''} ${data.patient_nom || ''}</p>
+                        <p><strong>ID Patient:</strong> ${data.patient_id || ''}</p>
+                        <p><strong>Date de naissance:</strong> ${data.patient_naissance || ''}</p>
+                        <p><strong>Médecin:</strong> Dr. ${data.medecin_prenom || ''} ${data.medecin_nom || ''}</p>
+                        <p><strong>Période d'arrêt:</strong> Du ${data.arret_debut || ''} au ${data.arret_fin || ''}</p>
+                        <p><strong>Travail possible:</strong> ${data.travail_possible || 'Non'}</p>
+                        <p><strong>Raison:</strong> ${data.raison_arret || ''}</p>
+                    `;
+                    break;
+                    
+                case 'certificat_naissance':
+                    content = `
+                        <h4>Certificat de naissance</h4>
+                        <p><strong>Enfant:</strong> ${data.enfant_prenom || ''} ${data.enfant_nom || ''}</p>
+                        <p><strong>Date de naissance:</strong> ${data.enfant_naissance || ''}</p>
+                        <p><strong>Sexe:</strong> ${data.enfant_sexe || ''}</p>
+                        <p><strong>Poids:</strong> ${data.enfant_poids || ''}</p>
+                        <p><strong>Taille:</strong> ${data.enfant_taille || ''}</p>
+                        <p><strong>Mère:</strong> ${data.mere_nom || ''}</p>
+                        <p><strong>Père:</strong> ${data.pere_nom || ''}</p>
+                        <p><strong>Médecin:</strong> ${data.medecin_nom_cert || ''}</p>
+                    `;
+                    break;
+                    
+                case 'facture_hospitalisation':
+                    content = `
+                        <h4>Facture d'hospitalisation</h4>
+                        <p><strong>Patient:</strong> ${data.facture_patient || ''}</p>
+                        <p><strong>Date de la facture:</strong> ${data.facture_date_emission || ''}</p>
+                        <p><strong>Médecin traitant:</strong> ${data.facture_medecin || ''}</p>
+                        <p><strong>Total des frais:</strong> ${data.total_general || ''}</p>
+                        <h5>Détail des soins:</h5>
+                        <ul>
+                            ${data.soins_total ? `<li>Soins: ${data.soins_total}</li>` : ''}
+                            ${data.medicaments_total ? `<li>Médicaments: ${data.medicaments_total}</li>` : ''}
+                            ${data.radio_total ? `<li>Radiologie: ${data.radio_total}</li>` : ''}
+                            ${data.chirurgie_total ? `<li>Chirurgie: ${data.chirurgie_total}</li>` : ''}
+                        </ul>
+                    `;
+                    break;
+            }
+            
+            preview.innerHTML = content;
+        }
+
+        async function submitSignature() {
+            if (!hasSignature) {
+                alert('Veuillez d\'abord signer le document');
+                return;
+            }
+            
+            // Capturer la signature
+            const signatureData = canvas.toDataURL();
+            
+            // Mettre à jour le document
+            documentData.signed = true;
+            documentData.patientSignature = signatureData;
+            documentData.signedAt = new Date().toISOString();
+            
+            // Sauvegarder dans localStorage
+            let sharedDocuments = JSON.parse(localStorage.getItem('sharedDocuments') || '[]');
+            const index = sharedDocuments.findIndex(doc => doc.id === documentData.id);
+            if (index >= 0) {
+                sharedDocuments[index] = documentData;
+                localStorage.setItem('sharedDocuments', JSON.stringify(sharedDocuments));
+            }
+            
+            // Créer le document complet avec signature intégrée
+            const fullDocument = await createSignedDocument(signatureData);
+            
+            // Simuler la notification au médecin
+            console.log('Notification envoyée au médecin:', documentData);
+            
+            // Afficher le document signé et l'option de téléchargement
+            displaySignedDocument(fullDocument);
+        }
+
+        async function createSignedDocument(signatureData) {
+            // Créer une copie complète du document avec signature
+            const documentContainer = document.createElement('div');
+            documentContainer.className = 'document-container';
+            documentContainer.style.background = 'white';
+            documentContainer.style.padding = '40px';
+            documentContainer.style.maxWidth = '800px';
+            documentContainer.style.margin = '20px auto';
+            documentContainer.style.fontFamily = 'Arial, sans-serif';
+
+            let content = '';
+
+            if (documentData.type === 'certificat_naissance') {
+                content = `
+                    <div class="document-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 20px;">
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(45deg, #8B0000, #DC143C); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold; margin-bottom: 10px;">🏥</div>
+                            <div style="margin-left: 20px;">
+                                <h2 style="margin: 0; color: #333;">San Andreas Medical Services</h2>
+                                <p style="margin: 0; font-style: italic;">Notre Priorité, Votre Santé</p>
+                            </div>
+                        </div>
+                        <div class="date-section" style="text-align: right;">
+                            <p style="margin: 0; color: #666;">Date: ${new Date().toLocaleDateString('fr-FR')}</p>
+                            <p style="margin: 0; color: #666;">Heure: ${new Date().toLocaleTimeString('fr-FR')}</p>
+                        </div>
+                    </div>
+
+                    <div class="document-content">
+                        <h1 style="text-align: center; color: #8B0000; margin: 30px 0; text-decoration: underline;">CERTIFICAT DE NAISSANCE</h1>
+                        
+                        <div class="info-section">
+                            <h3 style="color: #333; border-bottom: 1px solid #ccc;">Informations de l'enfant</h3>
+                            <p><strong>Nom de famille:</strong> ${documentData.data.enfant_nom || ''}</p>
+                            <p><strong>Prénom:</strong> ${documentData.data.enfant_prenom || ''}</p>
+                            <p><strong>Date de naissance:</strong> ${documentData.data.enfant_naissance || ''}</p>
+                            <p><strong>Lieu de naissance:</strong> ${documentData.data.enfant_lieu || ''}</p>
+                            <p><strong>Sexe:</strong> ${documentData.data.enfant_sexe || ''}</p>
+                            <p><strong>Poids:</strong> ${documentData.data.enfant_poids || ''} kg</p>
+                            <p><strong>Taille:</strong> ${documentData.data.enfant_taille || ''} cm</p>
+                        </div>
+
+                        <div class="info-section">
+                            <h3 style="color: #333; border-bottom: 1px solid #ccc;">Informations de la mère</h3>
+                            <p><strong>Nom:</strong> ${documentData.data.mere_nom || ''}</p>
+                            <p><strong>Prénom:</strong> ${documentData.data.mere_prenom || ''}</p>
+                            <p><strong>Date de naissance:</strong> ${documentData.data.mere_naissance || ''}</p>
+                            <p><strong>Lieu de naissance:</strong> ${documentData.data.mere_lieu || ''}</p>
+                            <p><strong>Profession:</strong> ${documentData.data.mere_profession || ''}</p>
+                        </div>
+
+                        <div class="info-section">
+                            <h3 style="color: #333; border-bottom: 1px solid #ccc;">Informations du père</h3>
+                            <p><strong>Nom:</strong> ${documentData.data.pere_nom || ''}</p>
+                            <p><strong>Prénom:</strong> ${documentData.data.pere_prenom || ''}</p>
+                            <p><strong>Date de naissance:</strong> ${documentData.data.pere_naissance || ''}</p>
+                            <p><strong>Lieu de naissance:</strong> ${documentData.data.pere_lieu || ''}</p>
+                            <p><strong>Profession:</strong> ${documentData.data.pere_profession || ''}</p>
+                        </div>
+
+                        <div class="signature-area" style="display: flex; justify-content: space-between; margin-top: 50px; gap: 50px;">
+                            <div class="signature-box" style="flex: 1;">
+                                <div class="signature-label" style="font-weight: bold; margin-bottom: 10px;">Signature du médecin</div>
+                                <div style="height: 120px; border: 1px solid #ccc; background: #f9f9f9;"></div>
+                            </div>
+                            <div class="signature-box" style="flex: 1;">
+                                <div class="signature-label" style="font-weight: bold; margin-bottom: 10px;">Signature des parents</div>
+                                <div style="height: 120px; border: 1px solid #ccc; background: white; background-image: url('${signatureData}'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
+                            </div>
+                        </div>
+
+                        <div class="certification" style="margin-top: 30px; text-align: center; font-style: italic;">
+                            <p>Je certifie l'exactitude des informations mentionnées ci-dessus.</p>
+                            <p><strong>Dr. ${documentData.data.medecin_nom_cert || 'Médecin'}</strong></p>
+                            <p>Signé électroniquement le ${new Date().toLocaleString('fr-FR')}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            documentContainer.innerHTML = content;
+            return documentContainer;
+        }
+
+        function displaySignedDocument(documentElement) {
+            // Masquer la section de signature
+            document.getElementById('documentSection').style.display = 'none';
+            
+            // Créer une nouvelle section pour le document signé
+            const signedSection = document.createElement('div');
+            signedSection.id = 'signedDocumentSection';
+            signedSection.innerHTML = `
+                <div class="success" style="margin: 20px 0; padding: 20px; border-radius: 10px; background: #d4edda; border: 1px solid #c3e6cb;">
+                    <h3 style="color: #155724;">✅ Document signé avec succès !</h3>
+                    <p>Votre signature a été ajoutée au certificat de naissance.</p>
+                    <div style="margin: 20px 0;">
+                        <button class="btn success" onclick="downloadSignedPDF()" style="margin-right: 10px;">📥 Télécharger PDF</button>
+                        <button class="btn" onclick="printDocument()" style="margin-right: 10px;">🖨️ Imprimer</button>
+                        <button class="btn secondary" onclick="window.close()">❌ Fermer</button>
+                    </div>
+                </div>
+                
+                <div id="signedDocumentContainer" style="border: 2px solid #28a745; border-radius: 10px; padding: 20px; background: #f8f9fa;">
+                    <h4 style="color: #28a745; text-align: center;">Document signé - Prêt à télécharger</h4>
+                </div>
+            `;
+
+            // Ajouter le document signé
+            signedSection.querySelector('#signedDocumentContainer').appendChild(documentElement);
+
+            // Insérer dans la page
+            document.querySelector('.container').appendChild(signedSection);
+        }
+
+        async function downloadSignedPDF() {
+            try {
+                console.log('Début du téléchargement PDF...');
+                
+                // Vérifier que les bibliothèques sont chargées
+                if (!window.jspdf || !window.html2canvas) {
+                    alert('❌ Bibliothèques PDF non chargées. Veuillez actualiser la page et réessayer.');
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const element = document.querySelector('#signedDocumentContainer .document-container');
+                
+                if (!element) {
+                    console.error('Élément du document non trouvé');
+                    alert('❌ Document non trouvé. Veuillez réessayer.');
+                    return;
+                }
+
+                console.log('Element trouvé:', element);
+                
+                // Générer l'image avec html2canvas
+                console.log('Génération de l\'image...');
+                const canvas = await html2canvas(element, {
+                    scale: 2,
+                    useCORS: true,
+                    logging: true,
+                    backgroundColor: '#ffffff',
+                    allowTaint: true,
+                    foreignObjectRendering: true
+                });
+                
+                console.log('Image générée:', canvas);
+                
+                // Créer le PDF
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 295; // A4 height in mm
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                console.log('Création du PDF...');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                // Ajouter l'image
+                const imgData = canvas.toDataURL('image/png');
+                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                
+                // Nom du fichier
+                const fileName = `certificat_naissance_signe_${new Date().toISOString().slice(0, 10)}.pdf`;
+                
+                console.log('Téléchargement du fichier:', fileName);
+                
+                // Télécharger
+                pdf.save(fileName);
+                
+                console.log('PDF téléchargé avec succès');
+                alert('✅ PDF téléchargé avec succès !');
+
+            } catch (error) {
+                console.error('Erreur complète lors de l\'export PDF:', error);
+                console.error('Stack trace:', error.stack);
+                alert(`❌ Erreur lors de la génération du PDF: ${error.message}`);
+            }
+        }
+
+        function printDocument() {
+            // Alternative d'impression si le PDF ne fonctionne pas
+            const element = document.querySelector('#signedDocumentContainer .document-container');
+            if (!element) {
+                alert('❌ Document non trouvé');
+                return;
+            }
+
+            // Créer une nouvelle fenêtre pour l'impression
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Certificat de Naissance Signé</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .document-container { max-width: 800px; margin: 0 auto; }
+                        .info-section { margin-bottom: 20px; }
+                        .signature-area { display: flex; justify-content: space-between; margin-top: 50px; }
+                        .signature-box { flex: 1; margin: 0 10px; }
+                        .signature-label { font-weight: bold; margin-bottom: 10px; }
+                        @media print { 
+                            body { margin: 0; } 
+                            .document-container { box-shadow: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${element.outerHTML}
+                </body>
+                </html>
+            `);
+            
+            printWindow.document.close();
+            printWindow.focus();
+            
+            // Attendre un peu puis imprimer
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+        }
+
+        function showError(message) {
+            document.getElementById('loadingSection').style.display = 'none';
+            document.getElementById('errorSection').textContent = message;
+            document.getElementById('errorSection').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

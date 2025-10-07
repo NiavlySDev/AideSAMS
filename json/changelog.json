@@ -1,5 +1,59 @@
 [ 
   {
+    "version": "v1.13.0-dev",
+    "date": "07/10/2025 - 16:30 (🚧 EN DÉVELOPPEMENT)",
+    "changes": [
+      {
+        "text": "🖋️ Système de signature électronique : Canvas HTML5 haute résolution pour signatures fluides avec support tactile et souris",
+        "type": "global"
+      },
+      {
+        "text": "🔗 Partage sécurisé avec les patients : Génération de liens temporaires uniques avec expiration automatique",
+        "type": "global"
+      },
+      {
+        "text": "📋 Restriction intelligente : Seuls les certificats de naissance peuvent être partagés pour signature par les parents",
+        "type": "global"
+      },
+      {
+        "text": "✉️ Simplification UX : Suppression de l'obligation d'email pour générer un lien de partage",
+        "type": "global"
+      },
+      {
+        "text": "📄 Intégration signature-document : Les signatures des parents apparaissent directement sur le certificat de naissance",
+        "type": "global"
+      },
+      {
+        "text": "📥 Export PDF avec signatures : Téléchargement haute résolution du document signé avec signatures intégrées",
+        "type": "global"
+      },
+      {
+        "text": "🎨 Interface signature intuitive : Page dédiée (signature.html) avec instructions claires pour les patients",
+        "type": "secondaire"
+      },
+      {
+        "text": "🔐 Sécurité renforcée : Chiffrement local des signatures, validation côté client, logs d'audit complets",
+        "type": "secondaire"
+      },
+      {
+        "text": "🧪 Outils de diagnostic : Fonctions de test canvas, page test-signature.html, logs détaillés pour debugging",
+        "type": "secondaire"
+      },
+      {
+        "text": "⚡ Workflow optimisé : Processus complet en 9 étapes du médecin aux parents avec notification automatique",
+        "type": "secondaire"
+      },
+      {
+        "text": "🖨️ Alternative d'impression : Fonction de sauvegarde si l'export PDF échoue sur certains navigateurs",
+        "type": "secondaire"
+      },
+      {
+        "text": "📱 Support multi-plateforme : Compatible Desktop, Tablet, Mobile avec rendu adaptatif haute qualité",
+        "type": "secondaire"
+      }
+    ]
+  },
+  {
     "version": "v1.12.2",
     "date": "07/10/2025 - 15:10",
     "changes": [
