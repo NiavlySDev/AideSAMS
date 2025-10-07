@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiques - Aide SAMS</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .main-container2 {
+            max-width: 1200px;
+            margin: auto;
+            padding: 32px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .stats-section {
+            margin-bottom: 40px;
+        }
+
+        .stats-title {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        .stats-summary {
+            margin-bottom: 16px;
+            color: #eee;
+            font-size: 1.08em;
+        }
+
+        .chart-container {
+            width: 100%;
+            max-width: 700px;
+            margin: 32px auto 32px auto;
+            background: #181818;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 12px #0003;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 32px;
+        }
+
+        .stats-table th,
+        .stats-table td {
+            border: 1px solid #444;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .stats-table th {
+            background: #222;
+            color: #22c55e;
+        }
+
+        .stats-table td {
+            color: #eee;
+            font-size: 1em;
+        }
+
+        .stats-table tr:nth-child(even) {
+            background: #181818;
+        }
+
+        .stats-table tr:nth-child(odd) {
+            background: #222;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: 1px solid #b91c1c;
+            border-radius: 10px;
+            background: #b91c1c;
+            color: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 18px;
+        }
+
+        .btn:hover {
+            background: #991b1b;
+            border-color: #991b1b;
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                padding: 16px 2vw;
+            }
+
+            .chart-container {
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .main-container {
+                padding: 8px 0;
+            }
+
+            .stats-title {
+                font-size: 1.1em;
+            }
+
+            .chart-container {
+                padding: 4px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="notif-bug" id="notif-bug" style="background:#ef4444;color:#fff;padding:6px 24px;margin:0 auto 18px auto;border-radius:8px;font-weight:500;font-size:0.92em;box-shadow:0 2px 8px #0002;white-space:nowrap;display:inline-flex;align-items:center;gap:10px;width:auto;max-width:100vw;justify-content:center;">
+        <span>Si vous trouvez un bug/erreur, contactez moi sur Discord <b>niavlysdev</b></span>
+        <button id="notif-close-btn" style="background:none;border:none;color:#fff;font-size:1.1em;cursor:pointer;padding:0 4px;line-height:1;">✕</button>
+    </div>
+    <button id="notif-toggle" style="display:none;background:#ef4444;color:#fff;border:none;border-radius:50%;width:28px;height:28px;align-items:center;justify-content:center;position:relative;left:50%;transform:translateX(-50%);margin-bottom:18px;cursor:pointer;font-size:1.15em;box-shadow:0 2px 8px #0002;">?</button>
+    <script>
+    function setNotifState(open) { localStorage.setItem('notif_bug_open', open ? '1' : '0'); }
+    function getNotifState() { return localStorage.getItem('notif_bug_open') !== '0'; }
+    function updateNotifDisplay() {
+        const open = getNotifState();
+        document.getElementById('notif-bug').style.display = open ? 'inline-flex' : 'none';
+        document.getElementById('notif-toggle').style.display = open ? 'none' : 'inline-flex';
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        updateNotifDisplay();
+        document.getElementById('notif-close-btn').onclick = function() { setNotifState(false); updateNotifDisplay(); };
+        document.getElementById('notif-toggle').onclick = function() { setNotifState(true); updateNotifDisplay(); };
+    });
+    </script>
+    
+    <div class="header" id="main-header"
+        style="display:flex;align-items:center;justify-content:center;gap:18px;margin-top:18px;margin-bottom:18px;">
+        <h1 style="margin:0;text-align:center;">Aide SAMS</h1>
+        <div style="display:flex;align-items:center;gap:12px;margin-left:18px;">
+            <span id="version-span"
+                style="background:#22c55e;color:#181818;padding:6px 16px;border-radius:8px;font-weight:bold;font-size:1.05em;">
+                v...
+            </span>
+            <button class="btn" onclick="location.href='informations.html'"
+                style="background:#181818;color:#22c55e;border:1px solid #22c55e;">
+                ℹ️ Informations
+            </button>
+        </div>
+    </div>
+    <nav class="nav-tabs">
+        <button class="nav-tab" onclick="location.href='service.html'">Service</button>
+        <button class="nav-tab" onclick="location.href='rapport.html'">Rapport de soins</button>
+        <button class="nav-tab" onclick="location.href='refus_de_soin.html'">Refus de soins</button>
+        <button class="nav-tab" onclick="location.href='morgue.html'">Morgue</button>
+        <button class="nav-tab" onclick="location.href='impayes.html'">Impayés</button>
+        <button class="nav-tab" onclick="location.href='lspd.html'">LSPD</button>
+        <button class="nav-tab" id="ph-tab" onclick="location.href='ph.html'">PH</button>
+        <button class="nav-tab" id="prof-tab" onclick="location.href='professeur.html'">Professeur</button>
+        <button class="nav-tab" onclick="location.href='manuels.html'">Manuels</button>
+        <button class="nav-tab active" onclick="location.href='statistiques.html'">Statistiques</button>
+        <button class="nav-tab" onclick="location.href='parametres.html'">Paramètres</button>
+    </nav>
+    <div class="main-container2">
+        <div class="stats-section">
+            <div class="stats-title">Résumé global</div>
+            <div id="global-summary" class="stats-summary"></div>
+            <button class="btn" onclick="resetStats()">🗑️ Réinitialiser les statistiques</button>
+            <button class="btn" onclick="exportStats()">📤 Exporter mes statistiques</button>
+            <input type="file" id="import-stats-input" accept=".json" style="display:none" />
+            <button class="btn" onclick="document.getElementById('import-stats-input').click()">📥 Importer mes statistiques</button>
+            <div class="chart-container"><canvas id="chart-hours"></canvas></div>
+        </div>
+        <div class="stats-section">
+            <div class="stats-title">Par jour</div>
+            <div id="stats-day"></div>
+            <div class="chart-container"><canvas id="chart-day-actions"></canvas></div>
+        </div>
+        <div class="stats-section">
+            <div class="stats-title">Par semaine</div>
+            <div id="stats-week"></div>
+            <div class="chart-container"><canvas id="chart-week-actions"></canvas></div>
+        </div>
+        <div class="stats-section">
+            <div class="stats-title">Par mois</div>
+            <div id="stats-month"></div>
+            <div class="chart-container"><canvas id="chart-month-actions"></canvas></div>
+        </div>
+        <div class="stats-section">
+            <div class="stats-title">Historique des services</div>
+            <div id="stats-history"></div>
+        </div>
+    </div>
+    <script>
+        function getWeekNumberAndRange(date) {
+            date = new Date(date.getTime());
+            date.setHours(0, 0, 0, 0);
+            let monday = new Date(date);
+            let day = monday.getDay() || 7;
+            if (day !== 1) monday.setDate(monday.getDate() - (day - 1));
+            let sunday = new Date(monday);
+            sunday.setDate(monday.getDate() + 6);
+            let weekNo = getWeekNumber(date);
+            let range = `semaine du ${monday.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })} au ${sunday.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })}`;
+            let key = `${date.getFullYear()}-${weekNo}`;
+            return { key, range };
+        }
+        function getWeekNumber(date) {
+            date = new Date(date.getTime());
+            date.setHours(0, 0, 0, 0);
+            date.setDate(date.getDate() + 4 - (date.getDay() || 7));
+            var yearStart = new Date(date.getFullYear(), 0, 1);
+            var weekNo = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+            return weekNo;
+        }
+        function pad2(n) { return n < 10 ? '0' + n : n; }
+        function formatHours(decimal) {
+            let h = Math.floor(decimal);
+            let m = Math.round((decimal - h) * 60);
+            return `${h}h${pad2(m)}`;
+        }
+        function formatMinutes(mins) {
+            let h = Math.floor(mins / 60);
+            let m = mins % 60;
+            return `${h}h${pad2(m)}`;
+        }
+
+        let stats = [];
+        try {
+            stats = JSON.parse(localStorage.getItem('sams_stats_services') || '[]');
+        } catch (e) { }
+
+        let totalServices = stats.length;
+        let totalMinutes = 0;
+        let totalActions = {};
+        stats.forEach(s => {
+            if (s.pdsHour !== "" && s.pdsMinute !== "" && s.fdsHour !== "" && s.fdsMinute !== "") {
+                let start = parseInt(s.pdsHour) * 60 + parseInt(s.pdsMinute);
+                let end = parseInt(s.fdsHour) * 60 + parseInt(s.fdsMinute);
+                if (end < start) end += 24 * 60;
+                let diff = end - start;
+                totalMinutes += diff;
+            }
+            if (Array.isArray(s.actions)) {
+                s.actions.forEach(a => {
+                    if (!a.label || !a.label.trim()) return;
+                    if (!totalActions[a.label]) totalActions[a.label] = 0;
+                    totalActions[a.label] += parseInt(a.count) || 0;
+                });
+            }
+        });
+        let actionsStr = Object.entries(totalActions).map(([k, v]) => `${v}x ${k}`).join(', ');
+        document.getElementById('global-summary').innerHTML = `
+        <b>Nombre de services :</b> ${totalServices}<br>
+        <b>Total d'heures de service :</b> ${formatMinutes(totalMinutes)}<br>
+        <b>Total actions :</b> ${actionsStr || 'Aucune'}
+    `;
+
+        let byDay = {}, dayLabels = [], dayHours = [], dayActions = {};
+        stats.forEach(s => {
+            let d = s.date || "";
+            if (!d) return;
+            if (!byDay[d]) byDay[d] = { count: 0, minutes: 0, actions: {} };
+            byDay[d].count++;
+            if (s.pdsHour !== "" && s.pdsMinute !== "" && s.fdsHour !== "" && s.fdsMinute !== "") {
+                let start = parseInt(s.pdsHour) * 60 + parseInt(s.pdsMinute);
+                let end = parseInt(s.fdsHour) * 60 + parseInt(s.fdsMinute);
+                if (end < start) end += 24 * 60;
+                let diff = end - start;
+                byDay[d].minutes += diff;
+            }
+            if (Array.isArray(s.actions)) {
+                s.actions.forEach(a => {
+                    if (!a.label || !a.label.trim()) return;
+                    if (!byDay[d].actions[a.label]) byDay[d].actions[a.label] = 0;
+                    byDay[d].actions[a.label] += parseInt(a.count) || 0;
+                    if (!dayActions[a.label]) dayActions[a.label] = [];
+                });
+            }
+        });
+        Object.entries(byDay).sort((a, b) => a[0].localeCompare(b[0])).forEach(([d, info]) => {
+            dayLabels.push(d);
+            dayHours.push(Math.round(info.minutes / 60 * 100) / 100);
+            Object.entries(info.actions).forEach(([label, count]) => {
+                if (!dayActions[label]) dayActions[label] = [];
+                dayActions[label].push(count);
+            });
+        });
+        let htmlDay = `<table class="stats-table"><tr><th>Date</th><th>Services</th><th>Heures</th><th>Actions</th></tr>`;
+        Object.entries(byDay).sort((a, b) => b[0].localeCompare(a[0])).forEach(([d, info]) => {
+            let actions = Object.entries(info.actions).map(([k, v]) => `${v}x ${k}`).join(', ');
+            htmlDay += `<tr><td>${d}</td><td>${info.count}</td><td>${formatMinutes(info.minutes)}</td><td>${actions || '-'}</td></tr>`;
+        });
+        htmlDay += `</table>`;
+        document.getElementById('stats-day').innerHTML = htmlDay;
+
+        let byWeek = {}, weekLabels = [], weekHours = [], weekRanges = {}, weekActions = {};
+        stats.forEach(s => {
+            let d = s.date || "";
+            if (!d) return;
+            let dateObj = new Date(d);
+            let { key, range } = getWeekNumberAndRange(dateObj);
+            weekRanges[key] = range;
+            if (!byWeek[key]) byWeek[key] = { count: 0, minutes: 0, actions: {} };
+            byWeek[key].count++;
+            if (s.pdsHour !== "" && s.pdsMinute !== "" && s.fdsHour !== "" && s.fdsMinute !== "") {
+                let start = parseInt(s.pdsHour) * 60 + parseInt(s.pdsMinute);
+                let end = parseInt(s.fdsHour) * 60 + parseInt(s.fdsMinute);
+                if (end < start) end += 24 * 60;
+                let diff = end - start;
+                byWeek[key].minutes += diff;
+            }
+            if (Array.isArray(s.actions)) {
+                s.actions.forEach(a => {
+                    if (!a.label || !a.label.trim()) return;
+                    if (!byWeek[key].actions[a.label]) byWeek[key].actions[a.label] = 0;
+                    byWeek[key].actions[a.label] += parseInt(a.count) || 0;
+                    if (!weekActions[a.label]) weekActions[a.label] = [];
+                });
+            }
+        });
+        Object.entries(byWeek).sort((a, b) => a[0].localeCompare(b[0])).forEach(([key, info]) => {
+            weekLabels.push(weekRanges[key]);
+            weekHours.push(Math.round(info.minutes / 60 * 100) / 100);
+            Object.entries(info.actions).forEach(([label, count]) => {
+                if (!weekActions[label]) weekActions[label] = [];
+                weekActions[label].push(count);
+            });
+        });
+        let htmlWeek = `<table class="stats-table"><tr><th>Semaine</th><th>Services</th><th>Heures</th><th>Actions</th></tr>`;
+        Object.entries(byWeek).sort((a, b) => b[0].localeCompare(a[0])).forEach(([key, info]) => {
+            let actions = Object.entries(info.actions).map(([k, v]) => `${v}x ${k}`).join(', ');
+            htmlWeek += `<tr><td>${weekRanges[key]}</td><td>${info.count}</td><td>${formatMinutes(info.minutes)}</td><td>${actions || '-'}</td></tr>`;
+        });
+        htmlWeek += `</table>`;
+        document.getElementById('stats-week').innerHTML = htmlWeek;
+
+        let byMonth = {}, monthLabels = [], monthHours = [], monthActions = {};
+        stats.forEach(s => {
+            let d = s.date || "";
+            if (!d) return;
+            let m = d.slice(0, 7);
+            if (!byMonth[m]) byMonth[m] = { count: 0, minutes: 0, actions: {} };
+            byMonth[m].count++;
+            if (s.pdsHour !== "" && s.pdsMinute !== "" && s.fdsHour !== "" && s.fdsMinute !== "") {
+                let start = parseInt(s.pdsHour) * 60 + parseInt(s.pdsMinute);
+                let end = parseInt(s.fdsHour) * 60 + parseInt(s.fdsMinute);
+                if (end < start) end += 24 * 60;
+                let diff = end - start;
+                byMonth[m].minutes += diff;
+            }
+            if (Array.isArray(s.actions)) {
+                s.actions.forEach(a => {
+                    if (!a.label || !a.label.trim()) return;
+                    if (!byMonth[m].actions[a.label]) byMonth[m].actions[a.label] = 0;
+                    byMonth[m].actions[a.label] += parseInt(a.count) || 0;
+                    if (!monthActions[a.label]) monthActions[a.label] = [];
+                });
+            }
+        });
+        Object.entries(byMonth).sort((a, b) => a[0].localeCompare(b[0])).forEach(([m, info]) => {
+            monthLabels.push(m);
+            monthHours.push(Math.round(info.minutes / 60 * 100) / 100);
+            Object.entries(info.actions).forEach(([label, count]) => {
+                if (!monthActions[label]) monthActions[label] = [];
+                monthActions[label].push(count);
+            });
+        });
+        let htmlMonth = `<table class="stats-table"><tr><th>Mois</th><th>Services</th><th>Heures</th><th>Actions</th></tr>`;
+        Object.entries(byMonth).sort((a, b) => b[0].localeCompare(a[0])).forEach(([m, info]) => {
+            let actions = Object.entries(info.actions).map(([k, v]) => `${v}x ${k}`).join(', ');
+            htmlMonth += `<tr><td>${m}</td><td>${info.count}</td><td>${formatMinutes(info.minutes)}</td><td>${actions || '-'}</td></tr>`;
+        });
+        htmlMonth += `</table>`;
+        document.getElementById('stats-month').innerHTML = htmlMonth;
+
+        let htmlHistory = `<table class="stats-table"><tr><th>Date</th><th>PDS</th><th>FDS</th><th>Durée</th><th>Actions</th><th>Récap</th></tr>`;
+        stats.slice().reverse().forEach(s => {
+            let pds = (s.pdsHour !== "" && s.pdsMinute !== "") ? `${pad2(s.pdsHour)}h${pad2(s.pdsMinute)}` : "";
+            let fds = (s.fdsHour !== "" && s.fdsMinute !== "") ? `${pad2(s.fdsHour)}h${pad2(s.fdsMinute)}` : "";
+            let total = "";
+            if (s.pdsHour !== "" && s.pdsMinute !== "" && s.fdsHour !== "" && s.fdsMinute !== "") {
+                let start = parseInt(s.pdsHour) * 60 + parseInt(s.pdsMinute);
+                let end = parseInt(s.fdsHour) * 60 + parseInt(s.fdsMinute);
+                if (end < start) end += 24 * 60;
+                let diff = end - start;
+                total = `${Math.floor(diff / 60)}h${pad2(diff % 60)}`;
+            }
+            let actions = Array.isArray(s.actions) ? s.actions.filter(a => a.label.trim()).map(a => `${a.count}x ${a.label}`).filter(txt => !txt.startsWith("0x")).join(', ') : "";
+            htmlHistory += `<tr>
+            <td>${s.date || "-"}</td>
+            <td>${pds}</td>
+            <td>${fds}</td>
+            <td>${total}</td>
+            <td>${actions || "-"}</td>
+            <td>${s.recap || "-"}</td>
+        </tr>`;
+        });
+        htmlHistory += `</table>`;
+        document.getElementById('stats-history').innerHTML = htmlHistory;
+
+        new Chart(document.getElementById('chart-hours'), {
+            type: 'bar',
+            data: {
+                labels: dayLabels,
+                datasets: [{
+                    label: "Heures de service par jour",
+                    data: dayHours,
+                    backgroundColor: "#22c55e88"
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: "Heures" } }
+                }
+            }
+        });
+
+        let actionLabels = Object.keys(dayActions);
+        let datasetsDay = actionLabels.map((label, i) => ({
+            label,
+            data: dayActions[label],
+            backgroundColor: `hsl(${i * 60},70%,50%)`,
+            stack: 'actions'
+        }));
+        new Chart(document.getElementById('chart-day-actions'), {
+            type: 'bar',
+            data: {
+                labels: dayLabels,
+                datasets: datasetsDay
+            },
+            options: {
+                plugins: { legend: { position: 'bottom' } },
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: "Actions" } }
+                }
+            }
+        });
+
+        let weekActionLabels = Object.keys(weekActions);
+        let datasetsWeek = weekActionLabels.map((label, i) => ({
+            label,
+            data: weekActions[label],
+            backgroundColor: `hsl(${i * 60},70%,50%)`,
+            stack: 'actions'
+        }));
+        new Chart(document.getElementById('chart-week-actions'), {
+            type: 'bar',
+            data: {
+                labels: weekLabels,
+                datasets: datasetsWeek
+            },
+            options: {
+                plugins: { legend: { position: 'bottom' } },
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: "Actions" } }
+                }
+            }
+        });
+
+        let monthActionLabels = Object.keys(monthActions);
+        let datasetsMonth = monthActionLabels.map((label, i) => ({
+            label,
+            data: monthActions[label],
+            backgroundColor: `hsl(${i * 60},70%,50%)`,
+            stack: 'actions'
+        }));
+        new Chart(document.getElementById('chart-month-actions'), {
+            type: 'bar',
+            data: {
+                labels: monthLabels,
+                datasets: datasetsMonth
+            },
+            options: {
+                plugins: { legend: { position: 'bottom' } },
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: "Actions" } }
+                }
+            }
+        });
+
+        function resetStats() {
+            if (confirm("Voulez-vous vraiment réinitialiser toutes les statistiques ? Cette action est irréversible.")) {
+                localStorage.removeItem('sams_stats_services');
+                location.reload();
+            }
+        }
+        function exportStats() {
+            const stats = localStorage.getItem('sams_stats_services') || '[]';
+            const blob = new Blob([stats], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'mes_statistiques_SAMS.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        document.getElementById('import-stats-input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const imported = JSON.parse(evt.target.result);
+                    if (!Array.isArray(imported)) throw new Error("Format invalide");
+                    localStorage.setItem('sams_stats_services', JSON.stringify(imported));
+                    alert("Statistiques importées avec succès !");
+                    location.reload();
+                } catch (err) {
+                    alert("Erreur lors de l'import : " + err.message);
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        // Gestion de l'affichage des onglets selon les spécialités
+        function updateSpecialityTabs() {
+            const params = JSON.parse(localStorage.getItem('sams_params') || '{}');
+            
+            const hasPH = params.specialities && params.specialities.includes('Pilote Héliporté');
+            const hasProf = params.specialities && params.specialities.includes('Professeur');
+            
+            const phTab = document.getElementById('ph-tab');
+            const profTab = document.getElementById('prof-tab');
+            
+            if (phTab) phTab.style.display = hasPH ? 'block' : 'none';
+            if (profTab) profTab.style.display = hasProf ? 'block' : 'none';
+        }
+        
+        // Appel au chargement de la page
+        document.addEventListener('DOMContentLoaded', updateSpecialityTabs);
+        
+        fetch('changelog.json')
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data) && data.length > 0) {
+                    document.querySelector('.header span').textContent = data[0].version;
+                }
+            });
+    </script>
+</body>
+
+</html>

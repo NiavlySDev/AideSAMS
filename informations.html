@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informations & Versions - Aide SAMS</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .info-container {
+            max-width: 900px;
+            margin: 40px auto 24px auto;
+            background: #181818;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px #0003;
+            padding: 28px 28px 18px 28px;
+        }
+        .info-title {
+            font-size: 1.5em;
+            color: #22c55e;
+            margin-bottom: 10px;
+        }
+        .info-list {
+            color: #eee;
+            margin: 0 0 0 10px;
+            font-size: 1.05em;
+        }
+        .changelog-global {
+            max-width: 1100px;
+            margin: 0 auto 40px auto;
+            background: #111;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px #0003;
+            padding: 32px 28px 24px 28px;
+        }
+        .changelog-title {
+            font-size: 2em;
+            color: #22c55e;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+        .changelog-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            justify-content: center;
+        }
+        .version-card {
+            background: #181818;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px #0004;
+            padding: 24px 22px 18px 22px;
+            min-width: 280px;
+            max-width: 370px;
+            flex: 1 1 320px;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 0;
+            border-left: 6px solid #22c55e;
+            position: relative;
+        }
+        .version-card:last-child {
+            border-color: #ef4444;
+        }
+        .version-header {
+            font-size: 1.15em;
+            color: #fbbf24;
+            margin-bottom: 6px;
+            margin-top: 0;
+            font-weight: bold;
+        }
+        .version-date {
+            color: #aaa;
+            font-size: 0.95em;
+            margin-left: 8px;
+        }
+        .version-list {
+            color: #eee;
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-left: 18px;
+        }
+        @media (max-width: 900px) {
+            .changelog-cards { flex-direction: column; gap: 18px; }
+            .version-card { max-width: 98vw; min-width: unset; }
+        }
+    </style>
+</head>
+<body>
+    
+    <button id="notif-toggle" onclick="document.getElementById('notif-bug').style.display='inline-flex';this.style.display='none';" style="display:none;background:#ef4444;color:#fff;border:none;border-radius:50%;width:28px;height:28px;align-items:center;justify-content:center;position:relative;left:50%;transform:translateX(-50%);margin-bottom:18px;cursor:pointer;font-size:1.15em;box-shadow:0 2px 8px #0002;">?</button>
+   <div class="header" style="display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:18px;margin-bottom:18px;position:relative;">
+        <h1 style="margin:0;text-align:center;flex:1;">Aide SAMS</h1>
+        <div style="display:flex;align-items:center;gap:12px;margin-left:18px;">
+            <span style="background:#22c55e;color:#181818;padding:6px 16px;border-radius:8px;font-weight:bold;font-size:1.05em;">
+                v...
+            </span>
+            <button class="btn" onclick="location.href='informations.html'" style="background:#181818;color:#22c55e;border:1px solid #22c55e;">
+                ℹ️ Informations
+            </button>
+        </div>
+    </div>
+    <nav class="nav-tabs">
+        <button class="nav-tab" onclick="location.href='service.html'">Service</button>
+        <button class="nav-tab" onclick="location.href='rapport.html'">Rapport de soins</button>
+        <button class="nav-tab" onclick="location.href='refus_de_soin.html'">Refus de soins</button>
+        <button class="nav-tab" onclick="location.href='morgue.html'">Morgue</button>
+        <button class="nav-tab" onclick="location.href='impayes.html'">Impayés</button>
+        <button class="nav-tab" onclick="location.href='lspd.html'">LSPD</button>
+        <button class="nav-tab" id="ph-tab" onclick="location.href='ph.html'">PH</button>
+        <button class="nav-tab" id="prof-tab" onclick="location.href='professeur.html'">Professeur</button>
+        <button class="nav-tab" onclick="location.href='manuels.html'">Manuels</button>
+        <button class="nav-tab" onclick="location.href='statistiques.html'">Statistiques</button>
+        <button class="nav-tab" onclick="location.href='parametres.html'">Paramètres</button>
+    </nav>
+
+    <div class="info-container">
+        <div class="info-title">Informations Projet</div>
+        <ul class="info-list">
+            <li><b>Nom du projet :</b> Aide SAMS</li>
+            <li><b>Développeur principal :</b> NiavlySDev (Jason Parker 37833)</li>
+            <li><b>Contact :</b> niavlys.dev@proton.me</li>
+            <li><b>Date de création :</b> 30 Juillet 2025</li>
+            <li><b>Technologies :</b> HTML, CSS, JavaScript, LocalStorage</li>
+            <li><b>Objectif :</b> Centraliser les outils, manuels, statistiques et documents utiles pour les SAMS.</li>
+            <li><b>Contributeurs Manuels :</b> Tous les professeurs ayant fait des cours sont sités dans la page <a href="manuels.html">Manuels</a></li>
+            <li><b>Licence :</b> MIT Liscence</li>
+        </ul>
+    </div>
+
+    <div class="changelog-global">
+        <div class="changelog-title">Changelog</div>
+        <div class="changelog-cards">
+        </div>
+    </div>
+    <script>
+    fetch('changelog.json')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.querySelector('.changelog-cards');
+        container.innerHTML = data.map(version => `
+          <div class="version-card">
+            <div class="version-header">${version.version} <span class="version-date">${version.date}</span></div>
+            <ul class="version-list">
+              ${version.changes.map(change => `<li>${change}</li>`).join('')}
+            </ul>
+          </div>
+        `).join('');
+      })
+      .catch(() => {
+        document.querySelector('.changelog-cards').innerHTML = '<div style="color:#ef4444;">Impossible de charger le changelog.</div>';
+      });
+    // Gestion de l'affichage des onglets selon les spécialités
+    function updateSpecialityTabs() {
+      const params = JSON.parse(localStorage.getItem('sams_params') || '{}');
+      
+      const hasPH = params.specialities && params.specialities.includes('Pilote Héliporté');
+      const hasProf = params.specialities && params.specialities.includes('Professeur');
+      
+      const phTab = document.getElementById('ph-tab');
+      const profTab = document.getElementById('prof-tab');
+      
+      if (phTab) phTab.style.display = hasPH ? 'block' : 'none';
+      if (profTab) profTab.style.display = hasProf ? 'block' : 'none';
+    }
+    
+    // Appel au chargement de la page
+    document.addEventListener('DOMContentLoaded', updateSpecialityTabs);
+    
+    fetch('changelog.json')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          document.querySelector('.header span').textContent = data[0].version;
+        }
+      });
+    </script>
+</body>
+</html>

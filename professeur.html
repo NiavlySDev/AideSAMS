@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professeur - Aide SAMS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="notif-bug" id="notif-bug" style="background:#ef4444;color:#fff;padding:6px 24px;margin:0 auto 18px auto;border-radius:8px;font-weight:500;font-size:0.92em;box-shadow:0 2px 8px #0002;white-space:nowrap;display:inline-flex;align-items:center;gap:10px;width:auto;max-width:100vw;justify-content:center;">
+        <span>Si vous trouvez un bug/erreur, contactez moi sur Discord <b>niavlysdev</b></span>
+        <button id="notif-close-btn" style="background:none;border:none;color:#fff;font-size:1.1em;cursor:pointer;padding:0 4px;line-height:1;">✕</button>
+    </div>
+    <button id="notif-toggle" style="display:none;background:#ef4444;color:#fff;border:none;border-radius:50%;width:28px;height:28px;align-items:center;justify-content:center;position:relative;left:50%;transform:translateX(-50%);margin-bottom:18px;cursor:pointer;font-size:1.15em;box-shadow:0 2px 8px #0002;">?</button>
+    <script>
+    function setNotifState(open) { localStorage.setItem('notif_bug_open', open ? '1' : '0'); }
+    function getNotifState() { return localStorage.getItem('notif_bug_open') !== '0'; }
+    function updateNotifDisplay() {
+        const open = getNotifState();
+        document.getElementById('notif-bug').style.display = open ? 'inline-flex' : 'none';
+        document.getElementById('notif-toggle').style.display = open ? 'none' : 'inline-flex';
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        updateNotifState();
+        document.getElementById('notif-close-btn').onclick = function() { setNotifState(false); updateNotifDisplay(); };
+        document.getElementById('notif-toggle').onclick = function() { setNotifState(true); updateNotifDisplay(); };
+    });
+    </script>
+    
+    <div class="header"
+        style="display:flex;align-items:center;justify-content:center;gap:18px;margin-top:18px;margin-bottom:18px;">
+        <h1 style="margin:0;text-align:center;">Aide SAMS</h1>
+        <div style="display:flex;align-items:center;gap:12px;margin-left:18px;">
+            <span
+                style="background:#22c55e;color:#181818;padding:6px 16px;border-radius:8px;font-weight:bold;font-size:1.05em;">
+                v...
+            </span>
+            <button class="btn" onclick="location.href='informations.html'"
+                style="background:#181818;color:#22c55e;border:1px solid #22c55e;">
+                ℹ️ Informations
+            </button>
+        </div>
+    </div>
+    <nav class="nav-tabs">
+        <button class="nav-tab" onclick="location.href='service.html'">Service</button>
+        <button class="nav-tab" onclick="location.href='rapport.html'">Rapport de soins</button>
+        <button class="nav-tab" onclick="location.href='refus_de_soin.html'">Refus de soins</button>
+        <button class="nav-tab" onclick="location.href='morgue.html'">Morgue</button>
+        <button class="nav-tab" onclick="location.href='impayes.html'">Impayés</button>
+        <button class="nav-tab" onclick="location.href='lspd.html'">LSPD</button>
+        <button class="nav-tab" id="ph-tab" onclick="location.href='ph.html'">PH</button>
+        <button class="nav-tab active" id="prof-tab" onclick="location.href='professeur.html'">Professeur</button>
+        <button class="nav-tab" onclick="location.href='manuels.html'">Manuels</button>
+        <button class="nav-tab" onclick="location.href='statistiques.html'">Statistiques</button>
+        <button class="nav-tab" onclick="location.href='parametres.html'">Paramètres</button>
+    </nav>
+
+    <div class="sub-nav" style="display: flex; align-items: center;">
+        <div id="note-tabs" style="flex:1; display:flex;"></div>
+        <button class="btn" id="add-note-btn" onclick="addNoteRapport()" style="margin-left:16px; white-space:nowrap;">➕ Ajouter un rapport</button>
+        <button class="btn" onclick="resetNoteRapport()" style="margin-left:8px;background:#ef4444;color:#fff;">�️ Réinitialiser</button>
+    </div>
+
+    <div class="main-container" style="display:block;max-width:900px;">
+        <div class="card template-box" style="position:relative;">
+            <button class="copy-btn" onclick="copyTemplate()" style="top:16px;right:16px;">
+                📋 <span>Copier</span>
+            </button>
+            <div id="template-content"></div>
+        </div>
+        
+        <div class="cards-container">
+            <div class="card">
+                <h3>Formateurs</h3>
+                <div id="professeurs-note-container">
+                    <div class="professeur-row">
+                        <div class="form-group" style="flex:1;">
+                            <label for="prof1">Nom du 1er Professeur :</label>
+                            <input type="text" id="prof1" placeholder="Ex: Jason Parker" oninput="updateNoteTemplate(); saveCurrentNoteData();">
+                        </div>
+                    </div>
+                </div>
+                <button class="btn" onclick="addProfesseurNote()" style="margin-top:10px;">➕ Ajouter un professeur</button>
+            </div>
+
+            <div class="card">
+                <h3>Élève</h3>
+                <div class="form-group">
+                    <label for="eleveNomPrenom">Nom prénom de l'élève :</label>
+                    <input type="text" id="eleveNomPrenom" placeholder="Ex: Jason Parker" oninput="updateNoteTemplate(); saveCurrentNoteData();">
+                </div>
+                <div class="form-group">
+                    <label for="eleveDiscord">Identifiant Discord de l'élève :</label>
+                    <input type="text" id="eleveDiscord" placeholder="Ex: 123456789012345678" oninput="updateNoteTemplate(); saveCurrentNoteData();">
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Manuel SAMS (/10)</h3>
+                <div class="form-group">
+                    <label for="notePiliers">Piliers (/2) :</label>
+                    <input type="number" id="notePiliers" min="0" max="2" step="0.5" oninput="limitAndCalculate(this, 2)">
+                </div>
+                <div class="form-group">
+                    <label for="noteHierarchie">Hiérarchie (/3) :</label>
+                    <input type="number" id="noteHierarchie" min="0" max="3" step="0.5" oninput="limitAndCalculate(this, 3)">
+                </div>
+                <div class="form-group">
+                    <label for="noteProtocole">Protocole (/1) :</label>
+                    <input type="number" id="noteProtocole" min="0" max="1" step="0.5" oninput="limitAndCalculate(this, 1)">
+                </div>
+                <div class="form-group">
+                    <label for="noteSpecialites">Spécialités (/1) :</label>
+                    <input type="number" id="noteSpecialites" min="0" max="1" step="0.5" oninput="limitAndCalculate(this, 1)">
+                </div>
+                <div class="form-group">
+                    <label for="noteCodesRadios">Code radio (/3) :</label>
+                    <input type="number" id="noteCodesRadios" min="0" max="3" step="0.5" oninput="limitAndCalculate(this, 3)">
+                </div>
+                <div class="form-group" style="font-weight:bold;margin-top:15px;">
+                    <span>Total Manuel SAMS : <span id="totalManuel">0</span>/10</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Mise en situation (/10)</h3>
+                <div class="form-group">
+                    <label for="noteTypeBlessures">Type de blessures (/2) :</label>
+                    <input type="number" id="noteTypeBlessures" min="0" max="2" step="0.5" oninput="limitAndCalculate(this, 2)">
+                </div>
+                <div class="form-group">
+                    <label for="noteRapport">Savoir faire le rapport (/3) :</label>
+                    <input type="number" id="noteRapport" min="0" max="3" step="0.5" oninput="limitAndCalculate(this, 3)">
+                </div>
+                <div class="form-group">
+                    <label for="noteMiseEnSituation">Mise en situation (/3) :</label>
+                    <input type="number" id="noteMiseEnSituation" min="0" max="3" step="0.5" oninput="limitAndCalculate(this, 3)">
+                </div>
+                <div class="form-group">
+                    <label for="noteConnaissanceHopital">Connaissance de l'hôpital (/2) :</label>
+                    <input type="number" id="noteConnaissanceHopital" min="0" max="2" step="0.5" oninput="limitAndCalculate(this, 2)">
+                </div>
+                <div class="form-group" style="font-weight:bold;margin-top:15px;">
+                    <span>Total Mise en situation : <span id="totalMiseEnSituation">0</span>/10</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Résultat final</h3>
+                <div class="form-group" style="font-weight:bold;font-size:1.2em;">
+                    <span>Note totale : <span id="noteFinale">0</span>/20</span>
+                </div>
+                <div class="form-group" style="font-weight:bold;margin-top:10px;">
+                    <span>Statut : <span id="statut" style="color:#22c55e;">Inapte</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        // --- Data Models ---
+        const defaultNoteRapport = () => ({
+            professeurs: [""],
+            eleveDiscord: "",
+            eleveNomPrenom: "",
+            piliers: 0, hierarchie: 0, protocole: 0, specialites: 0, codesRadios: 0,
+            typeBlessures: 0, rapport: 0, miseEnSituation: 0, connaissanceHopital: 0
+        });
+
+        let noteRapports = [];
+        let currentNoteIndex = 0;
+
+        function saveNoteRapports() {
+            localStorage.setItem('sams_professeur_notes', JSON.stringify({ rapports: noteRapports, current: currentNoteIndex }));
+        }
+
+        function loadNoteRapports() {
+            const data = localStorage.getItem('sams_professeur_notes');
+            if (data) {
+                const obj = JSON.parse(data);
+                noteRapports = obj.rapports || [defaultNoteRapport()];
+                currentNoteIndex = obj.current || 0;
+            } else {
+                noteRapports = [defaultNoteRapport()];
+                currentNoteIndex = 0;
+            }
+        }
+
+        function addNoteRapport() {
+            noteRapports.push(defaultNoteRapport());
+            currentNoteIndex = noteRapports.length - 1;
+            saveNoteRapports();
+            renderNoteTabs();
+            loadNoteData();
+            updateNoteTemplate();
+        }
+
+        function switchNoteRapport(index) {
+            saveCurrentNoteData();
+            currentNoteIndex = index;
+            saveNoteRapports();
+            loadNoteData();
+            renderNoteTabs();
+            updateNoteTemplate();
+        }
+
+        function resetNoteRapport() {
+            if (confirm('Êtes-vous sûr de vouloir réinitialiser ce rapport ?')) {
+                noteRapports[currentNoteIndex] = defaultNoteRapport();
+                saveNoteRapports();
+                loadNoteData();
+                updateNoteTemplate();
+            }
+        }
+
+        function renderNoteTabs() {
+            const tabsContainer = document.getElementById('note-tabs');
+            tabsContainer.innerHTML = '';
+            noteRapports.forEach((_, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'sub-nav-btn' + (index === currentNoteIndex ? ' active' : '');
+                btn.textContent = `Rapport ${index + 1}`;
+                btn.onclick = () => switchNoteRapport(index);
+                tabsContainer.appendChild(btn);
+            });
+        }
+
+        function saveCurrentNoteData() {
+            const rapport = noteRapports[currentNoteIndex];
+            if (!rapport) return;
+
+            // Sauvegarder les professeurs
+            rapport.professeurs = [];
+            document.querySelectorAll('#professeurs-note-container input[id^="prof"]').forEach(input => {
+                if (input.value.trim()) rapport.professeurs.push(input.value.trim());
+            });
+
+            // Sauvegarder les données de l'élève
+            rapport.eleveDiscord = document.getElementById('eleveDiscord')?.value || "";
+            rapport.eleveNomPrenom = document.getElementById('eleveNomPrenom')?.value || "";
+
+            // Sauvegarder les notes
+            rapport.piliers = parseFloat(document.getElementById('notePiliers')?.value) || 0;
+            rapport.hierarchie = parseFloat(document.getElementById('noteHierarchie')?.value) || 0;
+            rapport.protocole = parseFloat(document.getElementById('noteProtocole')?.value) || 0;
+            rapport.specialites = parseFloat(document.getElementById('noteSpecialites')?.value) || 0;
+            rapport.codesRadios = parseFloat(document.getElementById('noteCodesRadios')?.value) || 0;
+            rapport.typeBlessures = parseFloat(document.getElementById('noteTypeBlessures')?.value) || 0;
+            rapport.rapport = parseFloat(document.getElementById('noteRapport')?.value) || 0;
+            rapport.miseEnSituation = parseFloat(document.getElementById('noteMiseEnSituation')?.value) || 0;
+            rapport.connaissanceHopital = parseFloat(document.getElementById('noteConnaissanceHopital')?.value) || 0;
+
+            saveNoteRapports();
+        }
+
+        function loadNoteData() {
+            const rapport = noteRapports[currentNoteIndex];
+            if (!rapport) return;
+
+            // Charger les professeurs
+            const container = document.getElementById('professeurs-note-container');
+            container.innerHTML = '';
+            rapport.professeurs.forEach((prof, index) => {
+                addProfesseurNote();
+                document.getElementById(`prof${index + 1}`).value = prof;
+            });
+            if (rapport.professeurs.length === 0) {
+                addProfesseurNote();
+            }
+
+            // Charger les données de l'élève
+            document.getElementById('eleveDiscord').value = rapport.eleveDiscord || "";
+            document.getElementById('eleveNomPrenom').value = rapport.eleveNomPrenom || "";
+
+            // Charger les notes
+            document.getElementById('notePiliers').value = rapport.piliers || 0;
+            document.getElementById('noteHierarchie').value = rapport.hierarchie || 0;
+            document.getElementById('noteProtocole').value = rapport.protocole || 0;
+            document.getElementById('noteSpecialites').value = rapport.specialites || 0;
+            document.getElementById('noteCodesRadios').value = rapport.codesRadios || 0;
+            document.getElementById('noteTypeBlessures').value = rapport.typeBlessures || 0;
+            document.getElementById('noteRapport').value = rapport.rapport || 0;
+            document.getElementById('noteMiseEnSituation').value = rapport.miseEnSituation || 0;
+            document.getElementById('noteConnaissanceHopital').value = rapport.connaissanceHopital || 0;
+
+            calculateNotes();
+        }
+
+        function limitAndCalculate(input, maxValue) {
+            let value = parseFloat(input.value);
+            if (value > maxValue) {
+                input.value = maxValue;
+            } else if (value < 0) {
+                input.value = 0;
+            }
+            calculateNotes();
+            saveCurrentNoteData();
+        }
+
+        function calculateNotes() {
+            const piliers = parseFloat(document.getElementById('notePiliers').value) || 0;
+            const hierarchie = parseFloat(document.getElementById('noteHierarchie').value) || 0;
+            const protocole = parseFloat(document.getElementById('noteProtocole').value) || 0;
+            const specialites = parseFloat(document.getElementById('noteSpecialites').value) || 0;
+            const codesRadios = parseFloat(document.getElementById('noteCodesRadios').value) || 0;
+
+            const typeBlessures = parseFloat(document.getElementById('noteTypeBlessures').value) || 0;
+            const rapport = parseFloat(document.getElementById('noteRapport').value) || 0;
+            const miseEnSituation = parseFloat(document.getElementById('noteMiseEnSituation').value) || 0;
+            const connaissanceHopital = parseFloat(document.getElementById('noteConnaissanceHopital').value) || 0;
+
+            const totalManuel = piliers + hierarchie + protocole + specialites + codesRadios;
+            const totalMiseEnSituation = typeBlessures + rapport + miseEnSituation + connaissanceHopital;
+            const noteFinale = totalManuel + totalMiseEnSituation;
+
+            document.getElementById('totalManuel').textContent = totalManuel.toFixed(1);
+            document.getElementById('totalMiseEnSituation').textContent = totalMiseEnSituation.toFixed(1);
+            document.getElementById('noteFinale').textContent = noteFinale.toFixed(1);
+
+            const statutEl = document.getElementById('statut');
+            if (noteFinale >= 12) {
+                statutEl.textContent = 'Apte';
+                statutEl.style.color = '#22c55e';
+            } else {
+                statutEl.textContent = 'Inapte';
+                statutEl.style.color = '#ef4444';
+            }
+
+            updateNoteTemplate();
+        }
+
+        function updateNoteTemplate() {
+            let professeurs = [];
+            document.querySelectorAll('#professeurs-note-container input[id^="prof"]').forEach(input => {
+                if (input.value.trim()) professeurs.push(input.value.trim());
+            });
+            
+            const professeursText = professeurs.length > 0 ? professeurs.join(' / ') : '[Nom du Professeur]';
+
+            const eleveDiscord = document.getElementById('eleveDiscord')?.value || '[Identifiant discord de l\'élève]';
+            const eleveNomPrenom = document.getElementById('eleveNomPrenom')?.value || '[Nom prénom de l\'élève]';
+
+            const piliers = parseFloat(document.getElementById('notePiliers')?.value) || 0;
+            const hierarchie = parseFloat(document.getElementById('noteHierarchie')?.value) || 0;
+            const protocole = parseFloat(document.getElementById('noteProtocole')?.value) || 0;
+            const specialites = parseFloat(document.getElementById('noteSpecialites')?.value) || 0;
+            const codesRadios = parseFloat(document.getElementById('noteCodesRadios')?.value) || 0;
+
+            const typeBlessures = parseFloat(document.getElementById('noteTypeBlessures')?.value) || 0;
+            const rapport = parseFloat(document.getElementById('noteRapport')?.value) || 0;
+            const miseEnSituation = parseFloat(document.getElementById('noteMiseEnSituation')?.value) || 0;
+            const connaissanceHopital = parseFloat(document.getElementById('noteConnaissanceHopital')?.value) || 0;
+
+            const totalManuel = piliers + hierarchie + protocole + specialites + codesRadios;
+            const totalMiseEnSituation = typeBlessures + rapport + miseEnSituation + connaissanceHopital;
+            const noteFinale = totalManuel + totalMiseEnSituation;
+            const statut = noteFinale >= 12 ? 'Apte' : 'Inapte';
+
+            const template = `**__Nom des formateurs :__** ${professeursText}
+**__Noms de l'élève passant la formation :__** <@${eleveDiscord}>
+
+**__Manuel SAMS :__** ${totalManuel.toFixed(1)}/10
+> Piliers : ${piliers.toFixed(1)}/2
+> Hiérarchie : ${hierarchie.toFixed(1)}/3
+> Protocole : ${protocole.toFixed(1)}/1
+> Spécialités : ${specialites.toFixed(1)}/1
+> Code radio : ${codesRadios.toFixed(1)}/3
+
+**__Mise en situation :__** ${totalMiseEnSituation.toFixed(1)}/10
+> Type de blessures : ${typeBlessures.toFixed(1)}/2
+> Savoir faire le rapport : ${rapport.toFixed(1)}/3
+> Mise en situation : ${miseEnSituation.toFixed(1)}/3
+> Connaissance de l'hôpital : ${connaissanceHopital.toFixed(1)}/2
+
+**__Total :__** ${noteFinale.toFixed(1)}/20
+
+**__Conclusion :__** ${eleveNomPrenom} est **${statut}** a passé EMT`;
+
+            const templateDiv = document.getElementById('template-content');
+            if (templateDiv) templateDiv.innerHTML = `<pre style="white-space: pre-wrap; font-family: inherit;">${template}</pre>`;
+        }
+
+        let professeurNoteCount = 1;
+
+        function addProfesseurNote() {
+            professeurNoteCount++;
+            const container = document.getElementById('professeurs-note-container');
+            
+            const newRow = document.createElement('div');
+            newRow.className = 'professeur-row';
+            newRow.innerHTML = `
+                <div class="form-group" style="flex:1;">
+                    <label for="prof${professeurNoteCount}">Nom du ${getOrdinal(professeurNoteCount)} Professeur :</label>
+                    <input type="text" id="prof${professeurNoteCount}" placeholder="Ex: Jason Parker" oninput="updateNoteTemplate(); saveCurrentNoteData();">
+                </div>
+                <button class="btn" onclick="removeProfesseurNote(this)" style="background:#ef4444;color:#fff;margin-left:10px;align-self:end;margin-bottom:5px;">🗑️</button>
+            `;
+            
+            container.appendChild(newRow);
+            updateNoteTemplate();
+        }
+
+        function getOrdinal(num) {
+            const ordinals = ['', '1er', '2e', '3e', '4e', '5e', '6e', '7e', '8e', '9e', '10e'];
+            return ordinals[num] || `${num}e`;
+        }
+            updatePointsTemplate();
+        
+
+        function fillSamsFields(fieldId) {
+            const params = JSON.parse(localStorage.getItem('sams_params') || '{}');
+            if (params.samsName && document.getElementById(fieldId)) {
+                document.getElementById(fieldId).value = params.samsName;
+                updateNoteTemplate();
+            }
+        }
+
+        function selectAll(element) {
+            element.select();
+            element.setSelectionRange(0, 99999);
+        }
+
+        function copyTemplate() {
+            const templateDiv = document.getElementById('template-content');
+            const text = templateDiv.textContent || templateDiv.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const copyBtn = document.querySelector('.copy-btn span');
+                if (copyBtn) {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copié !';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                    }, 2000);
+                }
+            });
+        }
+
+        function getOrdinal(num) {
+            const ordinals = ['', '1er', '2e', '3e', '4e', '5e', '6e', '7e', '8e', '9e', '10e'];
+            return ordinals[num] || `${num}e`;
+        }
+
+        function removeProfesseurNote(button) {
+            if (document.querySelectorAll('#professeurs-note-container .professeur-row').length > 1) {
+                button.parentElement.remove();
+                updateNoteTemplate();
+                saveCurrentNoteData();
+            }
+        }
+
+        // Gestion de l'affichage des onglets PH et Professeur selon les spécialités
+        function updateSpecialityTabs() {
+            const params = JSON.parse(localStorage.getItem('sams_params') || '{}');
+            
+            const hasPH = params.specialities && params.specialities.includes('Pilote Héliporté');
+            const hasProf = params.specialities && params.specialities.includes('Professeur');
+            
+            const phTab = document.getElementById('ph-tab');
+            const profTab = document.getElementById('prof-tab');
+            
+            if (phTab) phTab.style.display = hasPH ? 'block' : 'none';
+            if (profTab) profTab.style.display = hasProf ? 'block' : 'none';
+            
+            // Redirige vers la page d'accueil si on n'a pas la spécialité Professeur
+            if (!hasProf && window.location.pathname.includes('professeur.html')) {
+                window.location.href = 'service.html';
+            }
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNotifDisplay();
+            updateSpecialityTabs();
+            
+            loadNoteRapports();
+            renderNoteTabs();
+            loadNoteData();
+            
+            // Remplir automatiquement les champs professeur avec les données des paramètres
+            const params = JSON.parse(localStorage.getItem('sams_params') || '{}');
+            if (params.samsName) {
+                const prof1 = document.getElementById('prof1');
+                if (prof1 && !prof1.value) {
+                    prof1.value = params.samsName;
+                }
+            }
+            
+            updateNoteTemplate();
+            calculateNotes();
+        });
+
+        fetch('changelog.json')
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data) && data.length > 0) {
+                    document.querySelector('.header span').textContent = data[0].version;
+                }
+            });
+    </script>
+
+    <style>
+        .participant-row, .professeur-row {
+            display: flex;
+            align-items: end;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .participant-row .form-group, .professeur-row .form-group {
+            margin-bottom: 0;
+        }
+        
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .cards-container .card {
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+        }
+        
+
+        
+        .btn-fill {
+            background: #22c55e;
+            color: #181818;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+        
+        .btn-fill:hover {
+            background: #16a34a;
+        }
+    </style>
+</body>
+
+</html>
