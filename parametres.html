@@ -35,6 +35,7 @@
         <button class="nav-tab" id="ph-tab" onclick="location.href='ph.html'">PH</button>
         <button class="nav-tab" id="prof-tab" onclick="location.href='professeur.html'">Professeur</button>
         <button class="nav-tab" onclick="location.href='manuels.html'">Manuels</button>
+        <button class="nav-tab" onclick="location.href='documents.html'">Documents</button>
         <button class="nav-tab" onclick="location.href='suggestions.html'">Suggestions/Bugs</button>
         <button class="nav-tab" onclick="location.href='hierarchie.html'">Hiérarchie</button>
         <button class="nav-tab active" onclick="location.href='parametres.html'">Paramètres</button>
@@ -106,9 +107,52 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Section Signatures -->
+            <div class="param-section" style="margin-top:24px;">
+                <h3>📝 Gestion des Signatures</h3>
+                <p style="color:#aaa;margin-bottom:16px;">Gérez vos signatures sauvegardées pour les documents médicaux.</p>
+                
+                <div id="signatures-list" class="signatures-list">
+                    <!-- Les signatures sauvegardées seront affichées ici -->
+                </div>
+                
+                <div style="display:flex;gap:12px;margin-top:16px;">
+                    <button class="btn" onclick="createNewSignature()" style="background:#3b82f6;color:white;">
+                        ✍️ Créer une nouvelle signature
+                    </button>
+                    <button class="btn" onclick="clearAllSignatures()" style="background:#ef4444;color:white;">
+                        🗑️ Supprimer toutes les signatures
+                    </button>
+                </div>
+            </div>
+
             <button class="btn" onclick="saveParams()"
                 style="margin-top:24px;display:block;margin-left:auto;margin-right:auto;">💾 Enregistrer</button>
             <span id="save-status" style="margin-left:16px;color:#22c55e;display:none;">Enregistré !</span>
+        </div>
+    </div>
+
+    <!-- Modal pour créer une signature -->
+    <div id="signatureModal" class="modal" style="display:none;">
+        <div class="modal-content" style="background:#1a1a1b;border-radius:12px;border:1px solid rgba(64,64,68,0.3);max-width:600px;">
+            <div class="modal-header" style="display:flex;justify-content:space-between;align-items:center;padding:1rem;border-bottom:1px solid rgba(64,64,68,0.3);background:rgba(30,30,32,0.8);border-radius:12px 12px 0 0;">
+                <h3 style="color:#22c55e;margin:0;">Créer une nouvelle signature</h3>
+                <span class="close" onclick="closeSignatureModal()" style="color:#aaa;font-size:28px;font-weight:bold;cursor:pointer;line-height:1;">&times;</span>
+            </div>
+            <div class="modal-body" style="padding:1.5rem;">
+                <div style="margin-bottom:20px;">
+                    <label style="display:block;margin-bottom:8px;color:#e5e5e5;">Nom de la signature:</label>
+                    <input type="text" id="signatureName" placeholder="Ex: Ma signature principale" style="width:100%;background:#2a2a2c;border:1px solid #404044;color:#e5e5e5;padding:10px;border-radius:6px;">
+                </div>
+                <div style="margin-bottom:20px;">
+                    <canvas id="newSignatureCanvas" width="400" height="150" style="border:2px solid #404044;border-radius:8px;background:white;display:block;margin:0 auto;cursor:crosshair;"></canvas>
+                </div>
+                <div style="display:flex;gap:10px;justify-content:center;margin-bottom:20px;">
+                    <button class="btn" onclick="clearNewSignature()">Effacer</button>
+                    <button class="btn" onclick="saveNewSignature()" style="background:#22c55e;color:#181818;">Sauvegarder</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -219,6 +263,194 @@
 
         loadParams();
         updateNavigation();
+        loadSignaturesList();
+
+        // Gestion des signatures
+        let newSignatureCanvas = null;
+        let newSignatureCtx = null;
+        let isDrawing = false;
+
+        function loadSignaturesList() {
+            const signatures = JSON.parse(localStorage.getItem('sams_signatures') || '[]');
+            const container = document.getElementById('signatures-list');
+            
+            if (signatures.length === 0) {
+                container.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;">Aucune signature sauvegardée</p>';
+                return;
+            }
+            
+            container.innerHTML = signatures.map(sig => `
+                <div class="signature-item" style="display:flex;align-items:center;justify-content:space-between;background:#2a2a2c;border:1px solid #404044;border-radius:8px;padding:12px;margin-bottom:8px;">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="background:white;padding:8px;border-radius:4px;min-width:100px;height:40px;display:flex;align-items:center;justify-content:center;">
+                            ${sig.type === 'drawn' ? `<img src="${sig.dataURL}" style="max-width:90px;max-height:30px;">` : `<span style="font-family:'${sig.font}',cursive;color:#000;font-size:16px;">${sig.text}</span>`}
+                        </div>
+                        <div>
+                            <div style="font-weight:500;">${sig.name}</div>
+                            <div style="color:#aaa;font-size:12px;">Créée le ${new Date(sig.created).toLocaleDateString('fr-FR')}</div>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="deleteSignature(${sig.id})" style="background:#ef4444;color:white;padding:6px 12px;font-size:12px;">
+                        🗑️ Supprimer
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function createNewSignature() {
+            document.getElementById('signatureModal').style.display = 'block';
+            setTimeout(() => {
+                initNewSignatureCanvas();
+            }, 100);
+        }
+
+        function closeSignatureModal() {
+            document.getElementById('signatureModal').style.display = 'none';
+            document.getElementById('signatureName').value = '';
+            if (newSignatureCanvas) {
+                newSignatureCtx.clearRect(0, 0, newSignatureCanvas.width, newSignatureCanvas.height);
+            }
+        }
+
+        function initNewSignatureCanvas() {
+            newSignatureCanvas = document.getElementById('newSignatureCanvas');
+            newSignatureCtx = newSignatureCanvas.getContext('2d');
+            
+            newSignatureCtx.strokeStyle = '#000000';
+            newSignatureCtx.lineWidth = 2;
+            newSignatureCtx.lineCap = 'round';
+            newSignatureCtx.lineJoin = 'round';
+            
+            newSignatureCanvas.addEventListener('mousedown', startNewSignatureDrawing);
+            newSignatureCanvas.addEventListener('mousemove', drawNewSignature);
+            newSignatureCanvas.addEventListener('mouseup', stopNewSignatureDrawing);
+            newSignatureCanvas.addEventListener('mouseout', stopNewSignatureDrawing);
+            
+            // Touch events for mobile
+            newSignatureCanvas.addEventListener('touchstart', handleNewSignatureTouch);
+            newSignatureCanvas.addEventListener('touchmove', handleNewSignatureTouch);
+            newSignatureCanvas.addEventListener('touchend', stopNewSignatureDrawing);
+        }
+
+        function startNewSignatureDrawing(e) {
+            isDrawing = true;
+            const rect = newSignatureCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            newSignatureCtx.beginPath();
+            newSignatureCtx.moveTo(x, y);
+        }
+
+        function drawNewSignature(e) {
+            if (!isDrawing) return;
+            
+            const rect = newSignatureCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            newSignatureCtx.lineTo(x, y);
+            newSignatureCtx.stroke();
+        }
+
+        function stopNewSignatureDrawing() {
+            isDrawing = false;
+            newSignatureCtx.beginPath();
+        }
+
+        function handleNewSignatureTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
+                                            e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            newSignatureCanvas.dispatchEvent(mouseEvent);
+        }
+
+        function clearNewSignature() {
+            if (newSignatureCanvas) {
+                newSignatureCtx.clearRect(0, 0, newSignatureCanvas.width, newSignatureCanvas.height);
+            }
+        }
+
+        function saveNewSignature() {
+            const name = document.getElementById('signatureName').value.trim();
+            
+            if (!name) {
+                alert('Veuillez entrer un nom pour la signature');
+                return;
+            }
+            
+            // Check if canvas has content
+            const imageData = newSignatureCtx.getImageData(0, 0, newSignatureCanvas.width, newSignatureCanvas.height);
+            let hasContent = false;
+            
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                if (imageData.data[i + 3] > 0) { // Check alpha channel
+                    hasContent = true;
+                    break;
+                }
+            }
+            
+            if (!hasContent) {
+                alert('Veuillez dessiner votre signature avant de sauvegarder');
+                return;
+            }
+            
+            const signatures = JSON.parse(localStorage.getItem('sams_signatures') || '[]');
+            const newSignature = {
+                id: Date.now(),
+                name: name,
+                dataURL: newSignatureCanvas.toDataURL('image/png'),
+                type: 'drawn',
+                created: new Date().toISOString()
+            };
+            
+            signatures.push(newSignature);
+            localStorage.setItem('sams_signatures', JSON.stringify(signatures));
+            
+            closeSignatureModal();
+            loadSignaturesList();
+            
+            showSaveStatus('Signature sauvegardée !');
+        }
+
+        function deleteSignature(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette signature ?')) {
+                let signatures = JSON.parse(localStorage.getItem('sams_signatures') || '[]');
+                signatures = signatures.filter(sig => sig.id !== id);
+                localStorage.setItem('sams_signatures', JSON.stringify(signatures));
+                loadSignaturesList();
+                showSaveStatus('Signature supprimée');
+            }
+        }
+
+        function clearAllSignatures() {
+            if (confirm('Êtes-vous sûr de vouloir supprimer TOUTES les signatures ? Cette action est irréversible.')) {
+                localStorage.removeItem('sams_signatures');
+                loadSignaturesList();
+                showSaveStatus('Toutes les signatures ont été supprimées');
+            }
+        }
+
+        function showSaveStatus(message) {
+            const status = document.getElementById('save-status');
+            status.textContent = message;
+            status.style.display = 'inline';
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 3000);
+        }
+
+        // Close modal on click outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('signatureModal');
+            if (event.target === modal) {
+                closeSignatureModal();
+            }
+        };
     </script>
     <script>
         fetch('json/changelog.json')

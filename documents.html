@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documents - Aide SAMS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/documents.css">
+    <script src="update-notifier.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+
+<body>
+    <div class="header"
+        style="display:flex;align-items:center;justify-content:center;gap:18px;margin-top:18px;margin-bottom:18px;">
+        <h1 style="margin:0;text-align:center;">Aide SAMS</h1>
+        <div style="display:flex;align-items:center;gap:12px;margin-left:18px;">
+            <span
+                style="background:#22c55e;color:#181818;padding:6px 16px;border-radius:8px;font-weight:bold;font-size:1.05em;">
+                v...
+            </span>
+            <button class="btn" onclick="location.href='informations.html'"
+                style="background:#181818;color:#22c55e;border:1px solid #22c55e;">
+                ℹ️ Informations
+            </button>
+        </div>
+    </div>
+
+    <nav class="nav-tabs">
+        <button class="nav-tab" onclick="location.href='service.html'">Service</button>
+        <button class="nav-tab" onclick="location.href='rapport.html'">Rapport de soins</button>
+        <button class="nav-tab" onclick="location.href='refus_de_soin.html'">Refus de soins</button>
+        <button class="nav-tab" onclick="location.href='morgue.html'">Morgue</button>
+        <button class="nav-tab" onclick="location.href='impayes.html'">Impayés</button>
+        <button class="nav-tab" onclick="location.href='lspd.html'">LSPD</button>
+        <button class="nav-tab" id="ph-tab" onclick="location.href='ph.html'">PH</button>
+        <button class="nav-tab" id="prof-tab" onclick="location.href='professeur.html'">Professeur</button>
+        <button class="nav-tab" onclick="location.href='manuels.html'">Manuels</button>
+        <button class="nav-tab active" onclick="location.href='documents.html'">Documents</button>
+        <button class="nav-tab" onclick="location.href='suggestions.html'">Suggestions/Bugs</button>
+        <button class="nav-tab" onclick="location.href='hierarchie.html'">Hiérarchie</button>
+        <button class="nav-tab" onclick="location.href='parametres.html'">Paramètres</button>
+    </nav>
+
+    <div class="main-container">
+        <div class="documents-header">
+            <h2>Gestion des Documents Médicaux</h2>
+            <div class="document-type-selector">
+                <select id="documentType" onchange="changeDocumentType()">
+                    <option value="">Sélectionner un type de document</option>
+                    <option value="arret-travail">Avis d'arrêt de travail</option>
+                    <option value="certificat-naissance">Certificat de naissance</option>
+                    <option value="facture-hospitalisation">Facture d'hospitalisation</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="document-editor" class="document-editor hidden">
+            <div class="editor-toolbar">
+                <button class="btn" onclick="saveDocument()">💾 Sauvegarder</button>
+                <button class="btn" onclick="loadDocument()">📂 Charger</button>
+                <button class="btn" onclick="clearDocument()">🗑️ Nouveau</button>
+                <button class="btn" onclick="exportPDF()">📄 Export PDF</button>
+                <button class="btn" onclick="exportWord()">📝 Export Word</button>
+                <button class="btn signature-btn" onclick="openSignatureModal()">✍️ Signer</button>
+                <button class="btn share-btn hidden" onclick="shareForParentSignature()">🔗 Partager pour signature</button>
+            </div>
+
+            <div id="document-content" class="document-content">
+                <!-- Le contenu du document sera inséré ici -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de signature -->
+    <div id="signatureModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Signature électronique</h3>
+                <span class="close" onclick="closeSignatureModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="signature-options">
+                    <button class="btn" onclick="showDrawSignature()">✍️ Dessiner</button>
+                    <button class="btn" onclick="showSavedSignatures()">📝 Signatures sauvées</button>
+                    <button class="btn" onclick="showTypeSignature()">⌨️ Taper</button>
+                </div>
+                
+                <div id="drawSignature" class="signature-method hidden">
+                    <canvas id="signatureCanvas" width="400" height="200"></canvas>
+                    <div class="signature-controls">
+                        <button class="btn" onclick="clearSignature()">Effacer</button>
+                        <button class="btn" onclick="saveSignatureToProfile()">💾 Sauver dans profil</button>
+                    </div>
+                </div>
+
+                <div id="savedSignatures" class="signature-method hidden">
+                    <div id="savedSignaturesList"></div>
+                </div>
+
+                <div id="typeSignature" class="signature-method hidden">
+                    <input type="text" id="typedSignature" placeholder="Tapez votre nom">
+                    <select id="signatureFont">
+                        <option value="Dancing Script">Dancing Script</option>
+                        <option value="Great Vibes">Great Vibes</option>
+                        <option value="Allura">Allura</option>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn" onclick="applySignature()">Appliquer la signature</button>
+                    <button class="btn btn-secondary" onclick="closeSignatureModal()">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de partage -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Partager pour signature des parents</h3>
+                <span class="close" onclick="closeShareModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Un lien sécurisé sera généré pour permettre aux parents de signer le document.</p>
+                <div class="share-options">
+                    <label>
+                        <input type="checkbox" id="requirePassword" checked> Protégé par mot de passe
+                    </label>
+                    <div id="passwordInfo" class="password-info">
+                        <strong>Mot de passe généré :</strong> <span id="generatedPassword"></span>
+                        <button class="btn-small" onclick="copyPassword()">📋 Copier</button>
+                    </div>
+                </div>
+                <div class="generated-link">
+                    <strong>Lien de partage :</strong>
+                    <div class="link-container">
+                        <input type="text" id="shareLink" readonly>
+                        <button class="btn-small" onclick="copyShareLink()">📋 Copier</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" onclick="generateShareLink()">Générer le lien</button>
+                    <button class="btn btn-secondary" onclick="closeShareModal()">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/documents.js"></script>
+    <script src="js/signature.js"></script>
+    <script src="js/document-templates.js"></script>
+    <script src="js/export-utils.js"></script>
+    <script src="js/share-system.js"></script>
+</body>
+
+</html>

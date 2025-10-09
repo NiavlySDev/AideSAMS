@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signature Parents - SAMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0b 0%, #1a1a1b 100%);
+            color: #e5e5e5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: #1a1a1b;
+            border-radius: 12px;
+            border: 1px solid rgba(64, 64, 68, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: rgba(30, 30, 32, 0.8);
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(64, 64, 68, 0.3);
+        }
+        
+        .header h1 {
+            color: #22c55e;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+        
+        .content {
+            padding: 2rem;
+        }
+        
+        .password-section {
+            margin-bottom: 2rem;
+        }
+        
+        .password-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .password-input input {
+            flex: 1;
+            background: #2a2a2c;
+            border: 1px solid #404044;
+            color: #e5e5e5;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        
+        .password-input input:focus {
+            outline: none;
+            border-color: #22c55e;
+        }
+        
+        .btn {
+            background: #22c55e;
+            color: #181818;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            background: #16a34a;
+        }
+        
+        .btn:disabled {
+            background: #6b7280;
+            cursor: not-allowed;
+        }
+        
+        .document-preview {
+            background: white;
+            color: #000;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            font-family: 'Times New Roman', serif;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .signature-section {
+            margin-top: 2rem;
+        }
+        
+        .parent-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .parent-btn {
+            flex: 1;
+            background: #2a2a2c;
+            color: #e5e5e5;
+            border: 1px solid #404044;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .parent-btn.active {
+            background: #22c55e;
+            color: #181818;
+            border-color: #22c55e;
+        }
+        
+        .signature-canvas-container {
+            margin: 1rem 0;
+        }
+        
+        #parentSignatureCanvas {
+            border: 2px solid #404044;
+            border-radius: 8px;
+            background: white;
+            display: block;
+            margin: 0 auto;
+            cursor: crosshair;
+        }
+        
+        .signature-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .error-message, .success-message {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+        
+        .success-message {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .status-indicator {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: #2a2a2c;
+            border: 1px solid #404044;
+        }
+        
+        .status-item.signed {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+        }
+        
+        .status-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #6b7280;
+        }
+        
+        .status-icon.signed {
+            background: #22c55e;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 SAMS - Signature des Parents</h1>
+            <p>Veuillez signer le certificat de naissance de votre enfant</p>
+        </div>
+        
+        <div class="content">
+            <!-- Password verification section -->
+            <div id="passwordSection" class="password-section">
+                <h3 style="margin-bottom: 1rem;">Authentification requise</h3>
+                <p style="color: #aaa; margin-bottom: 1rem;">
+                    Veuillez entrer le mot de passe fourni par le médecin pour accéder au document.
+                </p>
+                <div class="password-input">
+                    <input type="password" id="passwordInput" placeholder="Mot de passe" maxlength="8">
+                    <button class="btn" onclick="verifyPassword()">Accéder</button>
+                </div>
+                <div id="passwordError" class="error-message hidden">
+                    Mot de passe incorrect. Veuillez réessayer.
+                </div>
+            </div>
+            
+            <!-- Document section (hidden initially) -->
+            <div id="documentSection" class="hidden">
+                <div class="document-preview" id="documentPreview">
+                    <!-- Document content will be loaded here -->
+                </div>
+                
+                <div class="signature-section">
+                    <h3 style="margin-bottom: 1rem;">Signatures des parents</h3>
+                    
+                    <div class="status-indicator">
+                        <div class="status-item" id="motherStatus">
+                            <div class="status-icon" id="motherIcon"></div>
+                            <span>Mère</span>
+                        </div>
+                        <div class="status-item" id="fatherStatus">
+                            <div class="status-icon" id="fatherIcon"></div>
+                            <span>Père</span>
+                        </div>
+                    </div>
+                    
+                    <div class="parent-selector" style="margin-top: 1.5rem;">
+                        <button class="parent-btn" id="motherBtn" onclick="selectParent('mother')">
+                            Signer en tant que Mère
+                        </button>
+                        <button class="parent-btn" id="fatherBtn" onclick="selectParent('father')">
+                            Signer en tant que Père
+                        </button>
+                    </div>
+                    
+                    <div id="signatureArea" class="hidden">
+                        <div class="signature-canvas-container">
+                            <canvas id="parentSignatureCanvas" width="400" height="150"></canvas>
+                        </div>
+                        <div class="signature-controls">
+                            <button class="btn" onclick="clearParentSignature()">Effacer</button>
+                            <button class="btn" onclick="saveParentSignature()">Confirmer la signature</button>
+                        </div>
+                    </div>
+                    
+                    <div id="signatureSuccess" class="success-message hidden">
+                        Signature enregistrée avec succès !
+                    </div>
+                    
+                    <div id="allSignedMessage" class="success-message hidden">
+                        <strong>✅ Toutes les signatures ont été recueillies !</strong><br>
+                        Le médecin peut maintenant finaliser le document.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Parent signature system
+        class ParentSignatureSystem {
+            constructor() {
+                this.canvas = null;
+                this.ctx = null;
+                this.isDrawing = false;
+                this.shareId = null;
+                this.shareData = null;
+                this.currentParent = null;
+                this.signatures = {
+                    mother: null,
+                    father: null
+                };
+                
+                this.init();
+            }
+
+            init() {
+                // Get share ID from URL
+                const urlParams = new URLSearchParams(window.location.search);
+                this.shareId = urlParams.get('id');
+                
+                if (!this.shareId) {
+                    this.showError('Lien invalide. Veuillez utiliser le lien fourni par le médecin.');
+                    return;
+                }
+                
+                this.loadExistingSignatures();
+                this.setupCanvas();
+            }
+
+            loadExistingSignatures() {
+                // Try to load existing signatures from localStorage
+                const saved = localStorage.getItem(`parent_signatures_${this.shareId}`);
+                if (saved) {
+                    this.signatures = JSON.parse(saved);
+                    this.updateSignatureStatus();
+                }
+            }
+
+            saveSignaturesToLocal() {
+                localStorage.setItem(`parent_signatures_${this.shareId}`, JSON.stringify(this.signatures));
+            }
+
+            setupCanvas() {
+                this.canvas = document.getElementById('parentSignatureCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                
+                this.ctx.strokeStyle = '#000000';
+                this.ctx.lineWidth = 2;
+                this.ctx.lineCap = 'round';
+                this.ctx.lineJoin = 'round';
+                
+                // Mouse events
+                this.canvas.addEventListener('mousedown', this.startDrawing.bind(this));
+                this.canvas.addEventListener('mousemove', this.draw.bind(this));
+                this.canvas.addEventListener('mouseup', this.stopDrawing.bind(this));
+                this.canvas.addEventListener('mouseout', this.stopDrawing.bind(this));
+                
+                // Touch events for mobile
+                this.canvas.addEventListener('touchstart', this.handleTouch.bind(this));
+                this.canvas.addEventListener('touchmove', this.handleTouch.bind(this));
+                this.canvas.addEventListener('touchend', this.stopDrawing.bind(this));
+            }
+
+            startDrawing(e) {
+                this.isDrawing = true;
+                const rect = this.canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                this.ctx.beginPath();
+                this.ctx.moveTo(x, y);
+            }
+
+            draw(e) {
+                if (!this.isDrawing) return;
+                
+                const rect = this.canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                this.ctx.lineTo(x, y);
+                this.ctx.stroke();
+            }
+
+            stopDrawing() {
+                this.isDrawing = false;
+                this.ctx.beginPath();
+            }
+
+            handleTouch(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
+                                                e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                this.canvas.dispatchEvent(mouseEvent);
+            }
+
+            clearSignature() {
+                if (this.canvas) {
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                }
+            }
+
+            getSignatureDataURL() {
+                return this.canvas.toDataURL('image/png');
+            }
+
+            showError(message) {
+                const errorDiv = document.getElementById('passwordError');
+                errorDiv.textContent = message;
+                errorDiv.classList.remove('hidden');
+            }
+
+            hideError() {
+                const errorDiv = document.getElementById('passwordError');
+                errorDiv.classList.add('hidden');
+            }
+
+            updateSignatureStatus() {
+                const motherStatus = document.getElementById('motherStatus');
+                const fatherStatus = document.getElementById('fatherStatus');
+                const motherIcon = document.getElementById('motherIcon');
+                const fatherIcon = document.getElementById('fatherIcon');
+                
+                if (this.signatures.mother) {
+                    motherStatus.classList.add('signed');
+                    motherIcon.classList.add('signed');
+                }
+                
+                if (this.signatures.father) {
+                    fatherStatus.classList.add('signed');
+                    fatherIcon.classList.add('signed');
+                }
+                
+                if (this.signatures.mother && this.signatures.father) {
+                    document.getElementById('allSignedMessage').classList.remove('hidden');
+                }
+            }
+        }
+
+        // Global instance
+        let parentSystem = new ParentSignatureSystem();
+
+        function verifyPassword() {
+            const password = document.getElementById('passwordInput').value;
+            
+            if (!password) {
+                parentSystem.showError('Veuillez entrer le mot de passe.');
+                return;
+            }
+            
+            // Simulate password verification (in real implementation, this would be server-side)
+            // For demo purposes, we'll accept any 8-character password
+            if (password.length === 8) {
+                parentSystem.hideError();
+                document.getElementById('passwordSection').classList.add('hidden');
+                document.getElementById('documentSection').classList.remove('hidden');
+                
+                // Load document preview
+                loadDocumentPreview();
+            } else {
+                parentSystem.showError('Mot de passe incorrect. Veuillez réessayer.');
+            }
+        }
+
+        function loadDocumentPreview() {
+            // This would normally load the actual document data
+            // For demo purposes, we'll show a simplified preview
+            const preview = document.getElementById('documentPreview');
+            preview.innerHTML = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <strong>CERTIFICAT DE NAISSANCE</strong>
+                </div>
+                <div style="background: #e8f4f8; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                    <strong>L'enfant</strong><br>
+                    Nom: [Nom de l'enfant]<br>
+                    Prénom: [Prénom de l'enfant]<br>
+                    Date de naissance: [Date]<br>
+                </div>
+                <div style="background: #e8f4f8; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                    <strong>Les parents</strong><br>
+                    Mère: [Nom de la mère]<br>
+                    Père: [Nom du père]<br>
+                </div>
+                <p style="margin-top: 20px; color: #666; font-size: 12px;">
+                    <em>Les deux parents doivent signer ce document pour valider le certificat de naissance.</em>
+                </p>
+            `;
+        }
+
+        function selectParent(parentType) {
+            parentSystem.currentParent = parentType;
+            
+            // Update button states
+            document.querySelectorAll('.parent-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(parentType + 'Btn').classList.add('active');
+            
+            // Show signature area
+            document.getElementById('signatureArea').classList.remove('hidden');
+            
+            // Clear canvas
+            parentSystem.clearSignature();
+            
+            // Check if this parent already signed
+            if (parentSystem.signatures[parentType]) {
+                const confirmation = confirm('Ce parent a déjà signé. Voulez-vous créer une nouvelle signature ?');
+                if (!confirmation) {
+                    document.getElementById('signatureArea').classList.add('hidden');
+                    parentSystem.currentParent = null;
+                    document.querySelectorAll('.parent-btn').forEach(btn => btn.classList.remove('active'));
+                }
+            }
+        }
+
+        function clearParentSignature() {
+            parentSystem.clearSignature();
+        }
+
+        function saveParentSignature() {
+            if (!parentSystem.currentParent) {
+                alert('Veuillez sélectionner un parent.');
+                return;
+            }
+            
+            const signatureData = {
+                dataURL: parentSystem.getSignatureDataURL(),
+                timestamp: new Date().toISOString(),
+                type: 'drawn'
+            };
+            
+            // Check if canvas is not empty
+            const canvas = parentSystem.canvas;
+            const ctx = parentSystem.ctx;
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            let hasContent = false;
+            
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                if (imageData.data[i + 3] > 0) { // Check alpha channel
+                    hasContent = true;
+                    break;
+                }
+            }
+            
+            if (!hasContent) {
+                alert('Veuillez dessiner votre signature avant de confirmer.');
+                return;
+            }
+            
+            // Save signature
+            parentSystem.signatures[parentSystem.currentParent] = signatureData;
+            parentSystem.saveSignaturesToLocal();
+            
+            // Update status
+            parentSystem.updateSignatureStatus();
+            
+            // Hide signature area
+            document.getElementById('signatureArea').classList.add('hidden');
+            document.querySelectorAll('.parent-btn').forEach(btn => btn.classList.remove('active'));
+            parentSystem.currentParent = null;
+            
+            // Show success message
+            const successMsg = document.getElementById('signatureSuccess');
+            successMsg.classList.remove('hidden');
+            setTimeout(() => {
+                successMsg.classList.add('hidden');
+            }, 3000);
+            
+            // Simulate sending signature to server
+            this.sendSignatureToServer(parentSystem.currentParent, signatureData);
+        }
+
+        function sendSignatureToServer(parentType, signatureData) {
+            // In a real implementation, this would send the signature to the server
+            // For demo purposes, we'll just log it
+            console.log(`Signature saved for ${parentType}:`, signatureData);
+            
+            // Simulate server response
+            setTimeout(() => {
+                if (parentSystem.signatures.mother && parentSystem.signatures.father) {
+                    // Both parents have signed
+                    localStorage.setItem(`share_completed_${parentSystem.shareId}`, 'true');
+                }
+            }, 1000);
+        }
+
+        // Auto-focus password input
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('passwordInput').focus();
+            
+            // Allow Enter key to submit password
+            document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    verifyPassword();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

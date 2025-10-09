@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Documents - AideSAMS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .test-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #22c55e;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #22c55e;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .feature-list li:before {
+            content: "✅ ";
+            color: #22c55e;
+            font-weight: bold;
+        }
+        .btn {
+            display: inline-block;
+            background: #22c55e;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            margin: 10px 10px 10px 0;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #16a34a;
+        }
+        .btn-secondary {
+            background: #6b7280;
+        }
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1>🏥 AideSAMS - Système de Documents Médicaux</h1>
+            <p>Nouvelle fonctionnalité de gestion complète des documents médicaux</p>
+        </div>
+
+        <div class="test-section">
+            <h2>📋 Fonctionnalités implémentées</h2>
+            <ul class="feature-list">
+                <li>Documents remplissables directement sur le site (sans Google Docs)</li>
+                <li>Système de signature électronique intégré</li>
+                <li>Sauvegarde des signatures dans les paramètres</li>
+                <li>Export PDF et Word des documents</li>
+                <li>Partage sécurisé pour signature des parents (certificat de naissance)</li>
+                <li>Interface en mode blanc ressemblant aux documents originaux</li>
+                <li>Auto-sauvegarde des données saisies</li>
+                <li>Système de protection par mot de passe pour les partages</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2>📄 Documents disponibles</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px;">
+                <div style="flex: 1; min-width: 200px; padding: 15px; background: white; border-radius: 6px; border: 1px solid #ddd;">
+                    <h4 style="color: #4169e1; margin-bottom: 10px;">🩺 Avis d'arrêt de travail</h4>
+                    <p style="font-size: 14px; color: #666;">Document médical pour prescrire un arrêt de travail avec toutes les informations nécessaires.</p>
+                </div>
+                <div style="flex: 1; min-width: 200px; padding: 15px; background: white; border-radius: 6px; border: 1px solid #ddd;">
+                    <h4 style="color: #22c55e; margin-bottom: 10px;">👶 Certificat de naissance</h4>
+                    <p style="font-size: 14px; color: #666;">Certificat officiel avec signature des parents via un système de partage sécurisé.</p>
+                </div>
+                <div style="flex: 1; min-width: 200px; padding: 15px; background: white; border-radius: 6px; border: 1px solid #ddd;">
+                    <h4 style="color: #8b5cf6; margin-bottom: 10px;">💰 Facture d'hospitalisation</h4>
+                    <p style="font-size: 14px; color: #666;">Facture détaillée avec calcul automatique des totaux et export professionnel.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🔧 Instructions d'utilisation</h2>
+            <ol style="line-height: 1.8;">
+                <li><strong>Accéder aux documents :</strong> Cliquez sur l'onglet "Documents" dans la navigation</li>
+                <li><strong>Sélectionner un type :</strong> Choisissez le type de document à créer</li>
+                <li><strong>Remplir le formulaire :</strong> Saisissez les informations requises</li>
+                <li><strong>Ajouter une signature :</strong> Cliquez sur "Signer" pour ajouter votre signature électronique</li>
+                <li><strong>Exporter :</strong> Utilisez les boutons "Export PDF" ou "Export Word"</li>
+                <li><strong>Partager (certificat) :</strong> Utilisez "Partager pour signature" pour les parents</li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h2>🎯 Actions de test</h2>
+            <div style="margin-top: 15px;">
+                <a href="documents.html" class="btn">📋 Tester les Documents</a>
+                <a href="parametres.html" class="btn btn-secondary">⚙️ Gérer les Signatures</a>
+                <a href="parent-signature.html?id=test" class="btn btn-secondary">👨‍👩‍👧‍👦 Test Signature Parents</a>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🔒 Sécurité et Confidentialité</h2>
+            <ul style="line-height: 1.6;">
+                <li>🔐 Partage protégé par mot de passe généré automatiquement</li>
+                <li>💾 Données stockées localement (localStorage)</li>
+                <li>🔄 Système de vérification des signatures</li>
+                <li>⏱️ Timestamps pour traçabilité</li>
+                <li>🚫 Accès limité aux documents partagés</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: #f0f9ff; border-radius: 8px;">
+            <h3 style="color: #1e40af;">✨ Système prêt à l'utilisation !</h3>
+            <p style="color: #666;">Toutes les fonctionnalités demandées ont été implémentées avec succès.</p>
+        </div>
+    </div>
+</body>
+</html>
