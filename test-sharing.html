@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Système de Partage</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div style="max-width: 800px; margin: 50px auto; padding: 20px;">
+        <h1>🧪 Test du Système de Partage de Documents</h1>
+        
+        <div style="background: #f0f9ff; padding: 20px; border-radius: 12px; margin: 20px 0;">
+            <h2>✅ Fonctionnalités Implémentées</h2>
+            <ul>
+                <li>✅ <strong>Parents voient le document en entier mais en lecture seule</strong></li>
+                <li>✅ <strong>Médecins peuvent rouvrir les documents signés</strong></li>
+                <li>✅ Partage sécurisé avec mot de passe</li>
+                <li>✅ Signatures des deux parents obligatoires</li>
+                <li>✅ Gestionnaire de documents signés</li>
+                <li>✅ Export PDF des documents signés</li>
+            </ul>
+        </div>
+
+        <div style="background: #ecfdf5; padding: 20px; border-radius: 12px; margin: 20px 0;">
+            <h2>🚀 Comment tester</h2>
+            <ol>
+                <li>Allez sur la page <a href="documents.html" target="_blank">Documents</a></li>
+                <li>Créez un certificat de naissance</li>
+                <li>Cliquez sur "👨‍👩‍👧‍👦 Partager avec Parents"</li>
+                <li>Copiez le lien et le mot de passe</li>
+                <li>Testez le lien dans un nouvel onglet</li>
+                <li>Les parents signent le document</li>
+                <li>Revenez sur Documents et cliquez "📋 Documents Signés"</li>
+                <li>Chargez le document signé pour l'éditer</li>
+            </ol>
+        </div>
+
+        <div style="background: #fef3c7; padding: 20px; border-radius: 12px; margin: 20px 0;">
+            <h2>🔧 Fonctionnement Technique</h2>
+            <h3>Lecture Seule pour les Parents</h3>
+            <p>Le système :</p>
+            <ul>
+                <li>Récupère le HTML complet du document</li>
+                <li>Désactive tous les éléments de formulaire (inputs, selects, etc.)</li>
+                <li>Supprime les gestionnaires d'événements</li>
+                <li>Ajoute un watermark "📋 LECTURE SEULE"</li>
+                <li>Applique un style visuel pour indiquer la lecture seule</li>
+            </ul>
+
+            <h3>Réouverture par les Médecins</h3>
+            <p>Le système permet :</p>
+            <ul>
+                <li>Liste de tous les documents entièrement signés</li>
+                <li>Chargement du document avec les signatures intégrées</li>
+                <li>Export PDF direct du document signé</li>
+                <li>Édition possible du document (si nécessaire)</li>
+                <li>Badge visuel "✅ DOCUMENT SIGNÉ"</li>
+            </ul>
+        </div>
+
+        <div style="display: flex; gap: 15px; margin-top: 30px;">
+            <a href="documents.html" class="btn" style="background: #22c55e; color: white; text-decoration: none; padding: 12px 20px; border-radius: 8px; display: inline-block;">
+                📋 Tester les Documents
+            </a>
+            <a href="parent-signature.html?id=demo" class="btn" style="background: #3b82f6; color: white; text-decoration: none; padding: 12px 20px; border-radius: 8px; display: inline-block;">
+                👨‍👩‍👧‍👦 Interface Parents (Demo)
+            </a>
+        </div>
+
+        <div style="background: #f3f4f6; padding: 20px; border-radius: 12px; margin: 30px 0;">
+            <h2>📝 Résumé des Améliorations</h2>
+            <p><strong>Avant :</strong></p>
+            <ul>
+                <li>❌ Parents ne pouvaient pas voir le document complet</li>
+                <li>❌ Médecins ne pouvaient pas rouvrir les documents signés</li>
+            </ul>
+            
+            <p><strong>Maintenant :</strong></p>
+            <ul>
+                <li>✅ <strong>Parents voient le document entier en lecture seule</strong></li>
+                <li>✅ <strong>Médecins peuvent rouvrir et gérer tous les documents signés</strong></li>
+                <li>✅ Système complet de gestion des signatures</li>
+                <li>✅ Interface claire et intuitive</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

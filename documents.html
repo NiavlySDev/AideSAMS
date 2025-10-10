@@ -2,8 +2,9 @@
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"                <button class="btn signature-btn" onclick="openSignatureModal()">✍️ Signer</button>
+                <button class="btn share-btn" onclick="shareWithParents()">👨‍👩‍👧‍👦 Partager avec Parents</button>
+                <button class="btn" onclick="openSignedDocumentsManager()">📋 Documents Signés</button>    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Documents - Aide SAMS</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/documents.css">
@@ -63,9 +64,9 @@
                 <button class="btn" onclick="loadDocument()">📂 Charger</button>
                 <button class="btn" onclick="clearDocument()">🗑️ Nouveau</button>
                 <button class="btn" onclick="exportPDF()">📄 Export PDF</button>
-                <button class="btn" onclick="exportWord()">📝 Export Word</button>
+
                 <button class="btn signature-btn" onclick="openSignatureModal()">✍️ Signer</button>
-                <button class="btn share-btn hidden" onclick="shareForParentSignature()">🔗 Partager pour signature</button>
+                <button class="btn share-btn" onclick="shareWithParents()">👨‍�‍👧‍👦 Partager avec Parents</button>
             </div>
 
             <div id="document-content" class="document-content">
@@ -154,7 +155,7 @@
     <script src="js/signature.js"></script>
     <script src="js/document-templates.js"></script>
     <script src="js/export-utils.js"></script>
-    <script src="js/share-system.js"></script>
+    <script src="js/sharing-system.js"></script>
 </body>
 
 </html>

@@ -226,8 +226,9 @@
 
 .form-field input:focus, .form-field select:focus {
     outline: none;
-    border-bottom: 2px solid #4169e1;
+    border-bottom: 1px solid #4169e1;
     background: rgba(65, 105, 225, 0.05);
+    box-sizing: border-box;
 }
 
 .signature-area {

@@ -107,8 +107,24 @@
             border-radius: 8px;
             margin-bottom: 2rem;
             font-family: 'Times New Roman', serif;
-            max-height: 400px;
+            max-height: 500px;
             overflow-y: auto;
+            border: 2px solid #22c55e;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);
+        }
+        
+        .document-preview::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .document-preview::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .document-preview::-webkit-scrollbar-thumb {
+            background: #22c55e;
+            border-radius: 4px;
         }
         
         .signature-section {
@@ -449,23 +465,78 @@
                 return;
             }
             
-            // Simulate password verification (in real implementation, this would be server-side)
-            // For demo purposes, we'll accept any 8-character password
-            if (password.length === 8) {
+            // Verify password against stored document data
+            const documentData = JSON.parse(localStorage.getItem(`shared_document_${parentSystem.shareId}`) || 'null');
+            
+            if (documentData && documentData.password === password) {
                 parentSystem.hideError();
                 document.getElementById('passwordSection').classList.add('hidden');
                 document.getElementById('documentSection').classList.remove('hidden');
                 
                 // Load document preview
                 loadDocumentPreview();
+            } else if (!documentData) {
+                parentSystem.showError('Lien de partage invalide ou expiré.');
             } else {
                 parentSystem.showError('Mot de passe incorrect. Veuillez réessayer.');
             }
         }
 
         function loadDocumentPreview() {
-            // This would normally load the actual document data
-            // For demo purposes, we'll show a simplified preview
+            // Get document data from URL parameters or localStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const documentData = JSON.parse(localStorage.getItem(`shared_document_${parentSystem.shareId}`) || '{}');
+            
+            if (!documentData.html) {
+                // Fallback to demo content if no data found
+                loadDemoPreview();
+                return;
+            }
+            
+            const preview = document.getElementById('documentPreview');
+            
+            // Create a read-only version of the document
+            const readOnlyDocument = document.createElement('div');
+            readOnlyDocument.innerHTML = documentData.html;
+            
+            // Disable all form inputs to make it read-only
+            const inputs = readOnlyDocument.querySelectorAll('input, textarea, select, button');
+            inputs.forEach(input => {
+                input.disabled = true;
+                input.style.backgroundColor = '#f9f9f9';
+                input.style.border = '1px solid #ddd';
+                input.style.color = '#666';
+            });
+            
+            // Remove any onclick handlers
+            const clickableElements = readOnlyDocument.querySelectorAll('*[onclick]');
+            clickableElements.forEach(el => el.removeAttribute('onclick'));
+            
+            // Add read-only watermark
+            const watermark = document.createElement('div');
+            watermark.style.cssText = `
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: rgba(34, 197, 94, 0.1);
+                color: #22c55e;
+                padding: 5px 10px;
+                border-radius: 4px;
+                font-size: 12px;
+                font-weight: bold;
+                z-index: 1000;
+            `;
+            watermark.textContent = '📋 LECTURE SEULE';
+            
+            readOnlyDocument.style.position = 'relative';
+            readOnlyDocument.appendChild(watermark);
+            
+            preview.innerHTML = '';
+            preview.appendChild(readOnlyDocument);
+        }
+
+        function loadDemoPreview() {
+            // Fallback demo content
             const preview = document.getElementById('documentPreview');
             preview.innerHTML = `
                 <div style="text-align: center; margin-bottom: 20px;">
@@ -570,17 +641,27 @@
         }
 
         function sendSignatureToServer(parentType, signatureData) {
-            // In a real implementation, this would send the signature to the server
-            // For demo purposes, we'll just log it
-            console.log(`Signature saved for ${parentType}:`, signatureData);
+            // Save signature to the shared document data
+            const documentData = JSON.parse(localStorage.getItem(`shared_document_${parentSystem.shareId}`) || '{}');
             
-            // Simulate server response
-            setTimeout(() => {
-                if (parentSystem.signatures.mother && parentSystem.signatures.father) {
-                    // Both parents have signed
+            if (documentData) {
+                if (!documentData.signatures) {
+                    documentData.signatures = { mother: null, father: null };
+                }
+                
+                documentData.signatures[parentType] = signatureData;
+                
+                // Check if both parents have signed
+                if (documentData.signatures.mother && documentData.signatures.father) {
+                    documentData.status = 'completed';
                     localStorage.setItem(`share_completed_${parentSystem.shareId}`, 'true');
                 }
-            }, 1000);
+                
+                // Save updated document data
+                localStorage.setItem(`shared_document_${parentSystem.shareId}`, JSON.stringify(documentData));
+                
+                console.log(`Signature saved for ${parentType}:`, signatureData);
+            }
         }
 
         // Auto-focus password input

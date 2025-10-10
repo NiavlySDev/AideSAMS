@@ -5,8 +5,8 @@ function getArretTravailTemplate() {
         <div class="document-template">
             <div class="document-header">
                 <div class="logo-section">
-                    <div class="logo" style="background: none; border: none; box-shadow: none; width: 100px; height: 100px;">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjOEIwMDAwIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iNCIvPgo8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iIzMzMzMzMyIvPgo8IS0tIE1lZGljYWwgQ3Jvc3MgLS0+CjxwYXRoIGQ9Ik0zNSA0MEg2NVY2MEgzNVY0MFoiIGZpbGw9IiNEQzI2MjYiLz4KPHA+YXRoIGQ9Ik00MCAzNUg2MFY2NUg0MFYzNVoiIGZpbGw9IiNEQzI2MjYiLz4KPCEtLSBDYWR1Y2V1cyBTeW1ib2wgLS0+CjxwYXRoIGQ9Ik00NS41IDI4VjcyIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIvPgo8cGF0aCBkPSJNNTQuNSAyOFY3MiIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIiLz4KPHBhdGggZD0iTTQyIDQ1VjU1IiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIvPgo8cGF0aCBkPSJNNTggNDVWNTUiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxjaXJjbGUgY3g9IjQ3IiBjeT0iMzgiIHI9IjIiIGZpbGw9IiNGRkZGRkYiLz4KPGJ4aXJjbGUgY3g9IjUzIiBjeT0iMzgiIHI9IjIiIGZpbGw9IiNGRkZGRkYiLz4KPCEtLSBUZXh0IC0tPgo8dGV4dCB4PSI1MCIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI4IiBmaWxsPSIjRkZGRkZGIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5TQU4gQU5EUkVBUzwvdGV4dD4KPHR4dCB4PSI1MCIgeT0iODgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI2IiBmaWxsPSIjRkZGRkZGIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5NRURJQ0FMIFNFUVZJQ0U8L3RleHQ+Cjwvc3ZnPgo=" alt="SAMS Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    <div class="logo">
+                        <img src="./images/sams-logo.png" alt="SAMS Logo" class="sams-logo" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
                     </div>
                     <div class="logo-text">
                         <strong>San Andreas Medical Services</strong><br>
@@ -100,7 +100,6 @@ function getArretTravailTemplate() {
                         <div class="form-field">
                             <label>Travail possible :</label>
                             <select name="travail_possible">
-                                <option value="">Sélectionner</option>
                                 <option value="Non">Non</option>
                                 <option value="Oui">Oui</option>
                                 <option value="Partiel">Partiel</option>
@@ -126,7 +125,7 @@ function getArretTravailTemplate() {
                 <div class="signature-box">
                     <div class="signature-label">Date et heure :</div>
                     <div class="signature-line">
-                        <div class="signature-content"></div>
+                        <input type="datetime-local" name="signature_datetime" style="border: none; border-bottom: 1px solid #000; background: transparent; padding: 2px;">
                     </div>
                 </div>
             </div>
@@ -140,10 +139,7 @@ function getCertificatNaissanceTemplate() {
             <div class="document-header">
                 <div class="logo-section">
                     <div class="logo">
-                        <div style="font-size: 10px; line-height: 1.2;">
-                            SAN ANDREAS<br>
-                            MEDICAL SERVICES
-                        </div>
+                        <img src="./images/sams-logo.png" alt="SAMS Logo" class="sams-logo" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
                     </div>
                     <div class="logo-text">
                         <strong>San Andreas Medical Services</strong><br>
@@ -303,10 +299,7 @@ function getFactureHospitalisationTemplate() {
             <div class="document-header">
                 <div class="logo-section">
                     <div class="logo">
-                        <div style="font-size: 10px; line-height: 1.2;">
-                            SAN ANDREAS<br>
-                            MEDICAL SERVICES
-                        </div>
+                        <img src="./images/sams-logo.png" alt="SAMS Logo" class="sams-logo" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
                     </div>
                     <div class="logo-text">
                         <strong>San Andreas<br>Medical Services</strong><br>
@@ -427,10 +420,12 @@ function getFactureHospitalisationTemplate() {
                         <input type="date" name="date_signature" style="border: none; border-bottom: 1px solid #333; background: transparent; margin: 0 10px;">
                     </div>
                     <div style="margin-bottom: 10px;">
-                        <input type="text" name="medecin_signature_nom" style="border: none; border-bottom: 1px dotted #333; background: transparent; width: 300px;">
+                        <strong>Nom Prénom ID :</strong><br>
+                        <input type="text" name="medecin_signature_nom" style="border: none; border-bottom: 1px dotted #333; background: transparent; width: 300px; margin-top: 5px;">
                     </div>
                     <div style="margin-bottom: 20px;">
-                        <input type="text" name="medecin_grade_facture" style="border: none; border-bottom: 1px dotted #333; background: transparent; width: 200px;">
+                        <strong>Grade :</strong><br>
+                        <input type="text" name="medecin_grade_facture" style="border: none; border-bottom: 1px dotted #333; background: transparent; width: 200px; margin-top: 5px;">
                     </div>
                 </div>
             </div>
